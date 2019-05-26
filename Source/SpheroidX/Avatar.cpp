@@ -8,8 +8,7 @@ AAvatar::AAvatar()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	
 	PlaneMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Image Plane"));
 	Collision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 
@@ -18,14 +17,15 @@ AAvatar::AAvatar()
 	
 	Thruster = CreateDefaultSubobject<UPhysicsThrusterComponent>(TEXT("Thruster"));
 
-	RootComponent = SceneRoot;
+	RootComponent = Collision;
 
-	Collision->SetupAttachment(RootComponent);
+	Collision->SetSphereRadius(32);
+
 	PlaneMesh->SetupAttachment(Collision);
 	Thruster->SetupAttachment(Collision);
-	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->SetupAttachment(Collision);
 	Camera->SetupAttachment(SpringArm);
-	//
+	
 }
 
 // Called when the game starts or when spawned
@@ -47,5 +47,22 @@ void AAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAction("Thrust",IE_Pressed, this, &AAvatar::ThrustOn);
+	PlayerInputComponent->BindAction("Thrust", IE_Released, this, &AAvatar::ThrustOff);
+
 }
 
+void AAvatar::ThrustOn()
+{
+	
+	Thruster->Activate();
+	UE_LOG(LogTemp, Warning, TEXT("ThrustOn"))
+}
+
+void AAvatar::ThrustOff()
+{
+	
+	Thruster->Deactivate();
+	
+	UE_LOG(LogTemp, Warning, TEXT("ThrustOff"))
+}

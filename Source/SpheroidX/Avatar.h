@@ -19,10 +19,7 @@ class SPHEROIDX_API AAvatar : public APawn
 public:
 	// Sets default values for this pawn's properties
 	AAvatar();
-
-	UPROPERTY(EditAnywhere)
-	USceneComponent* SceneRoot;
-
+	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* PlaneMesh;
 
@@ -32,11 +29,15 @@ public:
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArm;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UPhysicsThrusterComponent* Thruster;
+	
+	void ThrustOn();
+
+	void ThrustOff();
 
 
 protected:
