@@ -35,9 +35,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UPhysicsThrusterComponent* Thruster;
 	
-	void ThrustOn();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Thrust)
+		float BaseThrustStrength;
 
-	void ThrustOff();
+		float PickupMultiplier = 1;
+
+		float InputMultiplier;
+
+
+		float SpheroidXValue;
+		float SpheroidYValue;
+
+		void SpheroidXAxis(float AxisValue);
+
+		void SpheroidYAxis(float AxisValue);
+
 
 
 protected:

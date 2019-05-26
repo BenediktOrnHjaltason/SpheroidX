@@ -2,6 +2,7 @@
 
 
 #include "Avatar.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AAvatar::AAvatar()
@@ -32,6 +33,8 @@ AAvatar::AAvatar()
 void AAvatar::BeginPlay()
 {
 	Super::BeginPlay();
+
+	
 	
 }
 
@@ -40,6 +43,16 @@ void AAvatar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	InputMultiplier = UKismetMathLibrary::Sqrt(
+		UKismetMathLibrary::MultiplyMultiply_FloatFloat(SpheroidXValue, 2)
+		+ UKismetMathLibrary::MultiplyMultiply_FloatFloat(SpheroidYValue, 2));
+
+	if (InputMultiplier > 1) InputMultiplier = 1;
+	
+	Thruster->ThrustStrength = InputMultiplier;
+
+	UE_LOG(LogTemp, Warning, TEXT("Tick: Length = %f"), Thruster->ThrustStrength)
+
 }
 
 // Called to bind functionality to input
@@ -47,22 +60,19 @@ void AAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction("Thrust",IE_Pressed, this, &AAvatar::ThrustOn);
-	PlayerInputComponent->BindAction("Thrust", IE_Released, this, &AAvatar::ThrustOff);
+	PlayerInputComponent->BindAxis("SpheroidX", this, &AAvatar::SpheroidXAxis);
+	PlayerInputComponent->BindAxis("SpheroidY", this, &AAvatar::SpheroidYAxis);
 
 }
 
-void AAvatar::ThrustOn()
+void AAvatar::SpheroidXAxis(float AxisValue)
 {
-	
-	Thruster->Activate();
-	UE_LOG(LogTemp, Warning, TEXT("ThrustOn"))
+	SpheroidXValue = AxisValue;
+	//UE_LOG(LogTemp, Warning, TEXT("X-value: %f"),AxisValue)
 }
 
-void AAvatar::ThrustOff()
+void AAvatar::SpheroidYAxis(float AxisValue)
 {
-	
-	Thruster->Deactivate();
-	
-	UE_LOG(LogTemp, Warning, TEXT("ThrustOff"))
+	SpheroidYValue = AxisValue;
+	//UE_LOG(LogTemp, Warning, TEXT("Y-value: %f"), AxisValue)
 }
