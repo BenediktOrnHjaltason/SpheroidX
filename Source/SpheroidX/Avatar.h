@@ -42,6 +42,8 @@ public:
 
 		float InputMultiplier;
 
+		float DegreesXRotation;
+
 
 		float SpheroidXValue;
 		float SpheroidYValue;

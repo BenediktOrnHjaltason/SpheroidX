@@ -33,8 +33,6 @@ AAvatar::AAvatar()
 void AAvatar::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 	
 }
 
@@ -49,9 +47,12 @@ void AAvatar::Tick(float DeltaTime)
 
 	if (InputMultiplier > 1) InputMultiplier = 1;
 	
-	Thruster->ThrustStrength = InputMultiplier;
+	Thruster->ThrustStrength = InputMultiplier * BaseThrustStrength;
 
-	UE_LOG(LogTemp, Warning, TEXT("Tick: Length = %f"), Thruster->ThrustStrength)
+	SetActorRotation(FRotator(0.f, 0.f, UKismetMathLibrary::DegAtan2(SpheroidXValue, SpheroidYValue)));
+
+
+	//UE_LOG(LogTemp, Warning, TEXT("Degrees: %f"), DegreesXRotation)
 
 }
 
