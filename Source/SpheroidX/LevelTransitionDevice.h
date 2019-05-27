@@ -43,6 +43,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = LevelTransitionDevice)
 		ELTD_Type EntranceOrExit;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LevelTransitionDevice)
+		bool bStartOpen = false;
+
 	UPROPERTY(EditAnywhere)
 		USceneComponent* PawnAttachLocation;
 
@@ -69,6 +72,10 @@ public:
 
 	void ShootOutSpheroid();
 	void ReactivateSpheroidInput();
+
+	UFUNCTION()
+		void CatchSpheroid(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
+			UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 protected:
 	// Called when the game starts or when spawned

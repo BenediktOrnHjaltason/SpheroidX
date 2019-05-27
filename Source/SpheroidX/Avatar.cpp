@@ -49,6 +49,7 @@ void AAvatar::Tick(float DeltaTime)
 	
 	Thruster->ThrustStrength = InputMultiplier * BaseThrustStrength;
 
+	if(InputMultiplier > 0.3)
 	SetActorRotation(FRotator(0.f, 0.f, UKismetMathLibrary::DegAtan2(SpheroidXValue, SpheroidYValue)));
 
 
