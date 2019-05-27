@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "MyEnums.h"
+#include "TimerManager.h"
 #include "LevelTransitionDevice.generated.h"
 
 UCLASS()
@@ -30,7 +32,7 @@ public:
 		UStaticMeshComponent* RightDoor;
 
 	UPROPERTY(EditAnywhere, Category = Sound)
-		USoundBase* OpenDoors;
+		USoundBase* Open;
 
 	UPROPERTY(EditAnywhere, Category = Sound)
 		USoundBase* Thonk;
@@ -38,6 +40,35 @@ public:
 	UPROPERTY(EditAnywhere, Category = Sound)
 		USoundBase* ReceiveSpheroid;
 
+	UPROPERTY(EditAnywhere, Category = LevelTransitionDevice)
+		ELTD_Type EntranceOrExit;
+
+	UPROPERTY(EditAnywhere)
+		USceneComponent* PawnAttachLocation;
+
+	class AAvatar* Spheroid;
+
+	//START Doors
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void TL_OperateDoors(EOpenOrClose OpenOrClose);
+
+	UFUNCTION(BlueprintCallable)
+		void OperateDoors(EOpenOrClose OpenOrClose, float Timeline);
+
+
+	FRotator LeftDoorClosed{ 0.f, 450.f, 450.f };
+	FRotator LeftDoorOpen{ 35.f, 450.f, 450.f };
+
+	FRotator RightDoorClosed{ 0.f, 810.f, 90.f };
+	FRotator RightDoorOpen{ -35.f, 810.f, 90.f };
+	//END Doors
+
+	FTimerHandle StartImpulseTimer;
+	FTimerHandle EnableSpheroidInputTimer;
+
+	void ShootOutSpheroid();
+	void ReactivateSpheroidInput();
 
 protected:
 	// Called when the game starts or when spawned
