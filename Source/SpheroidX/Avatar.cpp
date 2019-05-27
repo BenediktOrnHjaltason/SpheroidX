@@ -21,7 +21,7 @@ AAvatar::AAvatar()
 	RootComponent = Collision;
 
 	Collision->SetSphereRadius(32);
-
+	
 	PlaneMesh->SetupAttachment(Collision);
 	Thruster->SetupAttachment(Collision);
 	SpringArm->SetupAttachment(Collision);
@@ -33,7 +33,7 @@ AAvatar::AAvatar()
 void AAvatar::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Collision->SetMassScale(NAME_None,0.f);
 }
 
 // Called every frame

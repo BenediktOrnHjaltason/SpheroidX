@@ -36,12 +36,15 @@ void ALevelTransitionDevice::BeginPlay()
 
 	Spheroid = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
+
 	if (EntranceOrExit == ELTD_Type::Entrance)
 	{
 		Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 		if (Spheroid)
 		{
 			Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(),0));
+
+			Spheroid->Collision->SetEnableGravity(false);
 			Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
 				EAttachmentRule::SnapToTarget, false));
 		}
@@ -75,8 +78,11 @@ void ALevelTransitionDevice::OperateDoors(EOpenOrClose OpenOrClose, float Timeli
 
 void ALevelTransitionDevice::ShootOutSpheroid()
 {
-	Spheroid->Collision->AddImpulse(GetActorUpVector() * 10000);
-	GetWorldTimerManager().SetTimer(EnableSpheroidInputTimer, this, &ALevelTransitionDevice::ReactivateSpheroidInput, 1.f, false);
+	Spheroid->Collision->SetEnableGravity(true);
+
+	Spheroid->Collision->AddImpulse(GetActorUpVector() * 15000);
+
+	GetWorldTimerManager().SetTimer(EnableSpheroidInputTimer, this, &ALevelTransitionDevice::ReactivateSpheroidInput, 1.1f, false);
 }
 
 void ALevelTransitionDevice::ReactivateSpheroidInput()
