@@ -45,6 +45,8 @@ void ALevelTransitionDevice::BeginPlay()
 		{
 			Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(),0));
 
+			Spheroid->Collision->SetLinearDamping(1000.f);
+
 			Spheroid->Collision->SetEnableGravity(false);
 			Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
 				EAttachmentRule::SnapToTarget, false));
@@ -86,6 +88,7 @@ void ALevelTransitionDevice::OperateDoors(EOpenOrClose OpenOrClose, float Timeli
 void ALevelTransitionDevice::ShootOutSpheroid()
 {
 	Spheroid->Collision->SetEnableGravity(true);
+	Spheroid->Collision->SetLinearDamping(0);
 
 	Spheroid->Collision->AddImpulse(GetActorUpVector() * 15000);
 
@@ -101,12 +104,15 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	Spheroid->SetActorTickEnabled(false);
+	Spheroid->ExhaustMID->SetScalarParameterValue("Opacity", 0.f);
 
 	Spheroid->SetActorLocation(PawnAttachLocation->GetComponentLocation());
 	Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
 	EAttachmentRule::SnapToTarget, false));
 
 	Spheroid->Collision->SetLinearDamping(1000.f);
+	Spheroid->Collision->SetAngularDamping(1000.f);
 	Spheroid->Collision->SetEnableGravity(false);
 	//Spheroid->Collision->SetSimulatePhysics(false);
 

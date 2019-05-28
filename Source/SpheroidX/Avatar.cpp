@@ -17,6 +17,7 @@ AAvatar::AAvatar()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	
 	Thruster = CreateDefaultSubobject<UPhysicsThrusterComponent>(TEXT("Thruster"));
+	Exhaust = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Exhaust"));
 
 	RootComponent = Collision;
 
@@ -26,6 +27,7 @@ AAvatar::AAvatar()
 	Thruster->SetupAttachment(Collision);
 	SpringArm->SetupAttachment(Collision);
 	Camera->SetupAttachment(SpringArm);
+	Exhaust->SetupAttachment(Collision);
 	
 }
 
@@ -33,7 +35,8 @@ AAvatar::AAvatar()
 void AAvatar::BeginPlay()
 {
 	Super::BeginPlay();
-	Collision->SetMassScale(NAME_None,0.f);
+
+	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
 }
 
 // Called every frame
@@ -49,9 +52,13 @@ void AAvatar::Tick(float DeltaTime)
 	
 	Thruster->ThrustStrength = InputMultiplier * BaseThrustStrength;
 
-	if(InputMultiplier > 0.3)
-	SetActorRotation(FRotator(0.f, 0.f, UKismetMathLibrary::DegAtan2(SpheroidXValue, SpheroidYValue)));
+	if (InputMultiplier > 0.3)
+		SetActorRotation(FRotator(0.f, 0.f, UKismetMathLibrary::DegAtan2(SpheroidXValue, SpheroidYValue)));
 
+	
+	ExhaustMID->SetScalarParameterValue("Opacity", InputMultiplier);
+	Exhaust->SetRelativeScale3D(FVector(0.5f, UKismetMathLibrary::Lerp(0.5f, 1.0f, InputMultiplier), 1));
+		
 
 	//UE_LOG(LogTemp, Warning, TEXT("Degrees: %f"), DegreesXRotation)
 
@@ -77,4 +84,9 @@ void AAvatar::SpheroidYAxis(float AxisValue)
 {
 	SpheroidYValue = AxisValue;
 	//UE_LOG(LogTemp, Warning, TEXT("Y-value: %f"), AxisValue)
+}
+
+void AAvatar::TurnOffExhaust()
+{
+
 }

@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "PhysicsEngine/PhysicsThrusterComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
 #include "Avatar.generated.h"
 
 UCLASS()
@@ -21,19 +22,24 @@ public:
 	AAvatar();
 	
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* PlaneMesh;
+		UStaticMeshComponent* PlaneMesh;
 
 	UPROPERTY(VisibleAnywhere)
-	USphereComponent* Collision;
+		USphereComponent* Collision;
 
 	UPROPERTY(EditAnywhere)
-	USpringArmComponent* SpringArm;
+		USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* Camera;
+		UCameraComponent* Camera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UPhysicsThrusterComponent* Thruster;
+		UPhysicsThrusterComponent* Thruster;
+
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* Exhaust;
+
+	UMaterialInstanceDynamic* ExhaustMID;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Thrust)
 		float BaseThrustStrength;
@@ -52,7 +58,7 @@ public:
 
 		void SpheroidYAxis(float AxisValue);
 
-
+		void TurnOffExhaust();
 
 protected:
 	// Called when the game starts or when spawned
