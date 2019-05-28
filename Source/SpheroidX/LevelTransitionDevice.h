@@ -19,7 +19,7 @@ public:
 	// Sets default values for this actor's properties
 	ALevelTransitionDevice();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USphereComponent* Collision;
 
 	UPROPERTY(EditAnywhere)
@@ -42,9 +42,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = LevelTransitionDevice)
 		ELTD_Type EntranceOrExit;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LevelTransitionDevice)
-		bool bStartOpen = false;
 
 	UPROPERTY(EditAnywhere)
 		USceneComponent* PawnAttachLocation;
@@ -72,6 +69,9 @@ public:
 
 	void ShootOutSpheroid();
 	void ReactivateSpheroidInput();
+
+	UPROPERTY(EditAnywhere, Category = Stats)
+		int KeysNeededToOpen;
 
 	UFUNCTION()
 		void CatchSpheroid(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,

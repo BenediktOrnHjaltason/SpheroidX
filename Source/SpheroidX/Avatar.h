@@ -41,6 +41,8 @@ public:
 
 	UMaterialInstanceDynamic* ExhaustMID;
 	
+	class ALevelTransitionDevice* LevelExit;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Thrust)
 		float BaseThrustStrength;
 
@@ -58,7 +60,11 @@ public:
 
 		void SpheroidYAxis(float AxisValue);
 
-		void TurnOffExhaust();
+		//------------STATS-----------//
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Keys = 0;
+
+		void IncrementKeys();
 
 protected:
 	// Called when the game starts or when spawned

@@ -56,12 +56,8 @@ void ALevelTransitionDevice::BeginPlay()
 
 		GetWorldTimerManager().SetTimer(StartImpulseTimer, this, &ALevelTransitionDevice::ShootOutSpheroid, 4.f, false);
 	}
-	else if (EntranceOrExit == ELTD_Type::Exit)
-	{
-		if (bStartOpen) TL_OperateDoors(EOpenOrClose::Open);
 
-		Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-	}
+	else if (EntranceOrExit == ELTD_Type::Exit && KeysNeededToOpen <= 0) TL_OperateDoors(EOpenOrClose::Open);
 }
 
 // Called every frame
@@ -103,6 +99,8 @@ void ALevelTransitionDevice::ReactivateSpheroidInput()
 void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	if (EntranceOrExit == ELTD_Type::Entrance) return;
+
 	Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	Spheroid->SetActorTickEnabled(false);
 	Spheroid->ExhaustMID->SetScalarParameterValue("Opacity", 0.f);

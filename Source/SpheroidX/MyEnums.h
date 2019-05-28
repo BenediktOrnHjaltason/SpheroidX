@@ -26,6 +26,13 @@ enum class EOpenOrClose : uint8
 	Close				UMETA(DisplayName = "Close")
 };
 
+UENUM(BlueprintType)
+enum class EPickupType : uint8
+{
+	Key					UMETA(DisplayName = "Key"),
+	Boost				UMETA(DisplayName = "Boost")
+};
+
 UCLASS()
 class SPHEROIDX_API UMyEnums : public UUserDefinedEnum
 {

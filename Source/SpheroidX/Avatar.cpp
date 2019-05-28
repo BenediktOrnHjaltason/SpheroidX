@@ -3,6 +3,8 @@
 
 #include "Avatar.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "LevelTransitionDevice.h"
+#include "EngineUtils.h"
 
 // Sets default values
 AAvatar::AAvatar()
@@ -37,6 +39,13 @@ void AAvatar::BeginPlay()
 	Super::BeginPlay();
 
 	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
+
+	for (TActorIterator<ALevelTransitionDevice> DeviceItr(GetWorld()); DeviceItr; ++DeviceItr)
+	{
+		ALevelTransitionDevice *Device = *DeviceItr;
+
+		if (Device->EntranceOrExit == ELTD_Type::Exit) LevelExit = Device;
+	}
 }
 
 // Called every frame
@@ -86,7 +95,12 @@ void AAvatar::SpheroidYAxis(float AxisValue)
 	//UE_LOG(LogTemp, Warning, TEXT("Y-value: %f"), AxisValue)
 }
 
-void AAvatar::TurnOffExhaust()
+void AAvatar::IncrementKeys()
 {
+	++Keys;
 
+	if (Keys >= LevelExit->KeysNeededToOpen)
+	{
+		LevelExit->TL_OperateDoors(EOpenOrClose::Open);
+	}
 }
