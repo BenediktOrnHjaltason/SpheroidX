@@ -47,7 +47,7 @@ void ALevelTransitionDevice::BeginPlay()
 
 			Spheroid->Collision->SetLinearDamping(1000.f);
 
-			Spheroid->Collision->SetEnableGravity(false);
+			//Spheroid->Collision->SetEnableGravity(false);
 			Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
 				EAttachmentRule::SnapToTarget, false));
 		}
@@ -83,7 +83,7 @@ void ALevelTransitionDevice::OperateDoors(EOpenOrClose OpenOrClose, float Timeli
 
 void ALevelTransitionDevice::ShootOutSpheroid()
 {
-	Spheroid->Collision->SetEnableGravity(true);
+	//Spheroid->Collision->SetEnableGravity(true);
 	Spheroid->Collision->SetLinearDamping(0);
 
 	Spheroid->Collision->AddImpulse(GetActorUpVector() * 15000);
