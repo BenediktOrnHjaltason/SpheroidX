@@ -80,7 +80,7 @@ void AAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis("SpheroidX", this, &AAvatar::SpheroidXAxis);
 	PlayerInputComponent->BindAxis("SpheroidY", this, &AAvatar::SpheroidYAxis);
-
+	PlayerInputComponent->BindAction("StopMomentum", IE_Pressed, this, &AAvatar::StopMomentum);
 }
 
 void AAvatar::SpheroidXAxis(float AxisValue)
@@ -103,4 +103,10 @@ void AAvatar::IncrementKeys()
 	{
 		LevelExit->TL_OperateDoors(EOpenOrClose::Open);
 	}
+}
+
+void AAvatar::StopMomentum()
+{
+	UE_LOG(LogTemp,Warning, TEXT("StopMomentum called"))
+	Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
 }

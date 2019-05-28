@@ -65,6 +65,10 @@ public:
 		int Keys = 0;
 
 		void IncrementKeys();
+		//------------STATS-----------//
+		
+		
+		void StopMomentum();
 
 protected:
 	// Called when the game starts or when spawned
