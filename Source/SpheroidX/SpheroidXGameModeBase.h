@@ -20,6 +20,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void PlayHUDCountdown();
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void PlayHUD_Anim_ReachedGoal();
 };
 
 

@@ -95,6 +95,10 @@ public:
 		UFUNCTION(BlueprintCallable)
 			void MoveToEntrance(float Timeline);
 
+		UFUNCTION(BlueprintCallable)
+			void AfterMove();
+
+
 		FVector DeathLocation;
 
 		FTimerHandle MoveToEntranceHandle;

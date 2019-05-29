@@ -54,7 +54,7 @@ public:
 	//START Doors
 
 	UFUNCTION(BlueprintImplementableEvent)
-		void TL_OperateDoors(EOpenOrClose OpenOrClose);
+		void TL_OperateDoors(EOpenOrClose OpenOrClose, bool ForRespawn = false);
 
 	UFUNCTION(BlueprintCallable)
 		void OperateDoors(EOpenOrClose OpenOrClose, float Timeline);
@@ -74,6 +74,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void PrepareSpheroidForLaunch();
 
+	UFUNCTION(BlueprintCallable)
 	void ShootOutSequence();
 	
 	void ShootOutSpheroid();

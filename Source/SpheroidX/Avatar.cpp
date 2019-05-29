@@ -125,11 +125,7 @@ void AAvatar::StopMomentum()
 void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
-	{
-		GameModeRef->PlayHUDCountdown();
-		DeathSequence();
-	}
+	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic) DeathSequence();
 }
 
 void AAvatar::DeathSequence()
@@ -137,9 +133,18 @@ void AAvatar::DeathSequence()
 	Collision->SetLinearDamping(1000);
 	SetActorHiddenInGame(true);
 	DeathLocation = GetActorLocation();
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
+
+	GetWorldTimerManager().SetTimer(MoveToEntranceHandle, this, &AAvatar::TL_MoveToEntrance, 1.25f, false);
 }
 
 void AAvatar::MoveToEntrance(float Timeline)
 {
 	SetActorLocation(UKismetMathLibrary::VLerp(DeathLocation, EntranceAttachLoc, Timeline));
+}
+
+void AAvatar::AfterMove()
+{
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
+	LevelEntrance->TL_OperateDoors(EOpenOrClose::Close, true);
 }

@@ -61,6 +61,9 @@ void ALevelTransitionDevice::Tick(float DeltaTime)
 
 void ALevelTransitionDevice::PrepareSpheroidForLaunch()
 {
+	Spheroid->SetActorHiddenInGame(false);
+	Spheroid->SetActorRotation(FRotator(0.f, 0.f, 0.f));
+
 	Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
 	Spheroid->Collision->SetLinearDamping(1000.f);
@@ -94,7 +97,6 @@ void ALevelTransitionDevice::ShootOutSequence()
 
 void ALevelTransitionDevice::ShootOutSpheroid()
 {
-	//Spheroid->Collision->SetEnableGravity(true);
 	Spheroid->Collision->SetLinearDamping(0);
 
 	Spheroid->Collision->AddImpulse(GetActorUpVector() * 15000);
@@ -110,20 +112,22 @@ void ALevelTransitionDevice::ReactivateSpheroidInput()
 void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (EntranceOrExit == ELTD_Type::Entrance) return;
+	if (EntranceOrExit == ELTD_Type::Exit)
+	{
+		Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		Spheroid->SetActorTickEnabled(false);
+		Spheroid->ExhaustMID->SetScalarParameterValue("Opacity", 0.f);
 
-	Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	Spheroid->SetActorTickEnabled(false);
-	Spheroid->ExhaustMID->SetScalarParameterValue("Opacity", 0.f);
+		Spheroid->SetActorLocation(PawnAttachLocation->GetComponentLocation());
+		Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
+			EAttachmentRule::SnapToTarget, false));
 
-	Spheroid->SetActorLocation(PawnAttachLocation->GetComponentLocation());
-	Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
-	EAttachmentRule::SnapToTarget, false));
+		Spheroid->Collision->SetLinearDamping(1000.f);
+		Spheroid->Collision->SetAngularDamping(1000.f);
+		Spheroid->Collision->SetEnableGravity(false);
 
-	Spheroid->Collision->SetLinearDamping(1000.f);
-	Spheroid->Collision->SetAngularDamping(1000.f);
-	Spheroid->Collision->SetEnableGravity(false);
-	//Spheroid->Collision->SetSimulatePhysics(false);
+		TL_OperateDoors(EOpenOrClose::Close);
 
-	TL_OperateDoors(EOpenOrClose::Close);
+		GameModeRef->PlayHUD_Anim_ReachedGoal();
+	}
 }
