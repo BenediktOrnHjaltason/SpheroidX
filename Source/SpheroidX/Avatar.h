@@ -10,6 +10,8 @@
 #include "Camera/CameraComponent.h"
 #include "PhysicsEngine/PhysicsThrusterComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Engine/StaticMeshActor.h"
+#include "TimerManager.h"
 #include "Avatar.generated.h"
 
 UCLASS()
@@ -41,7 +43,17 @@ public:
 
 	UMaterialInstanceDynamic* ExhaustMID;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class ALevelTransitionDevice* LevelExit;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class ALevelTransitionDevice* LevelEntrance;
+
+	class ASpheroidXGameModeBase* GameModeRef;
+
+	FVector EntranceAttachLoc{ 0,0,0 };
+	FVector ExitAttachLoc{ 0,0,0 };
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Thrust)
 		float BaseThrustStrength;
@@ -69,11 +81,26 @@ public:
 		
 		
 		void StopMomentum();
-		/*
+		
 		UFUNCTION()
-			void TouchWall(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
+			void Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 				UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
-				*/
+
+		//------------DEATH-----------//
+		void DeathSequence();
+
+		UFUNCTION(BlueprintImplementableEvent)
+			void TL_MoveToEntrance();
+
+		UFUNCTION(BlueprintCallable)
+			void MoveToEntrance(float Timeline);
+
+		FVector DeathLocation;
+
+		FTimerHandle MoveToEntranceHandle;
+
+		//------------DEATH-----------//
+				
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

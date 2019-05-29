@@ -8,6 +8,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "MyEnums.h"
 #include "TimerManager.h"
+#include "Blueprint/UserWidget.h"
 #include "LevelTransitionDevice.generated.h"
 
 UCLASS()
@@ -48,6 +49,8 @@ public:
 
 	class AAvatar* Spheroid;
 
+	class ASpheroidXGameModeBase* GameModeRef;
+
 	//START Doors
 
 	UFUNCTION(BlueprintImplementableEvent)
@@ -66,9 +69,19 @@ public:
 
 	FTimerHandle StartImpulseTimer;
 	FTimerHandle EnableSpheroidInputTimer;
+	FTimerHandle ShootOutSequenceTimer;
 
+	UFUNCTION(BlueprintCallable)
+	void PrepareSpheroidForLaunch();
+
+	void ShootOutSequence();
+	
 	void ShootOutSpheroid();
 	void ReactivateSpheroidInput();
+
+	//HUD is created here and simultaneaously gives gamemode a reference to it
+	UFUNCTION(BlueprintImplementableEvent)
+		void CreateHUD();
 
 	UPROPERTY(EditAnywhere, Category = Stats)
 		int KeysNeededToOpen;

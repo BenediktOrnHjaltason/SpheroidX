@@ -35,7 +35,7 @@ public:
 	class AAvatar* Spheroid;
 
 	UFUNCTION()
-		void PickUp(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
+		void PickedUp(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 			UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 protected:

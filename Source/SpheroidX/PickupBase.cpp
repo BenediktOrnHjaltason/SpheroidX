@@ -29,7 +29,7 @@ void APickupBase::BeginPlay()
 
 	Spheroid = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
-	Collision->OnComponentBeginOverlap.AddDynamic(this, &APickupBase::PickUp);
+	Collision->OnComponentBeginOverlap.AddDynamic(this, &APickupBase::PickedUp);
 }
 
 // Called every frame
@@ -39,11 +39,9 @@ void APickupBase::Tick(float DeltaTime)
 
 }
 
-void APickupBase::PickUp(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
+void APickupBase::PickedUp(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	UE_LOG(LogTemp,Warning, TEXT("PICKED UP MOTHAFOCKA!"))
-
 	Collision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetActorHiddenInGame(true);
 
@@ -51,5 +49,4 @@ void APickupBase::PickUp(UPrimitiveComponent * OverlappedComp, AActor * OtherAct
 	{
 		Spheroid->IncrementKeys();
 	}
-
 }

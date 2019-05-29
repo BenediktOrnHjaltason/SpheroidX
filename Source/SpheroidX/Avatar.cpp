@@ -4,6 +4,7 @@
 #include "Avatar.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "LevelTransitionDevice.h"
+#include "SpheroidXGameModeBase.h"
 #include "EngineUtils.h"
 
 // Sets default values
@@ -39,12 +40,23 @@ void AAvatar::BeginPlay()
 	Super::BeginPlay();
 
 	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
+	GameModeRef = Cast<ASpheroidXGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	Collision->OnComponentBeginOverlap.AddDynamic(this, &AAvatar::Overlaps);
 
 	for (TActorIterator<ALevelTransitionDevice> DeviceItr(GetWorld()); DeviceItr; ++DeviceItr)
 	{
 		ALevelTransitionDevice *Device = *DeviceItr;
-
-		if (Device->EntranceOrExit == ELTD_Type::Exit) LevelExit = Device;
+		if (Device->EntranceOrExit == ELTD_Type::Exit)
+		{
+			LevelExit = Device;
+			ExitAttachLoc = LevelExit->PawnAttachLocation->GetComponentLocation();
+		}
+		else if (Device->EntranceOrExit == ELTD_Type::Entrance)
+		{
+			LevelEntrance = Device;
+			EntranceAttachLoc = LevelEntrance->PawnAttachLocation->GetComponentLocation();
+		}
 	}
 }
 
@@ -107,6 +119,27 @@ void AAvatar::IncrementKeys()
 
 void AAvatar::StopMomentum()
 {
-	UE_LOG(LogTemp,Warning, TEXT("StopMomentum called"))
 	Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
+}
+
+void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
+	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
+	{
+		GameModeRef->PlayHUDCountdown();
+		DeathSequence();
+	}
+}
+
+void AAvatar::DeathSequence()
+{
+	Collision->SetLinearDamping(1000);
+	SetActorHiddenInGame(true);
+	DeathLocation = GetActorLocation();
+}
+
+void AAvatar::MoveToEntrance(float Timeline)
+{
+	SetActorLocation(UKismetMathLibrary::VLerp(DeathLocation, EntranceAttachLoc, Timeline));
 }

@@ -4,6 +4,7 @@
 #include "LevelTransitionDevice.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Avatar.h"
+#include "SpheroidXGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -37,24 +38,15 @@ void ALevelTransitionDevice::BeginPlay()
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &ALevelTransitionDevice::CatchSpheroid);
 
 	Spheroid = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	GameModeRef = Cast<ASpheroidXGameModeBase>(GetWorld()->GetAuthGameMode());
 
+	CreateHUD();
 
 	if (EntranceOrExit == ELTD_Type::Entrance)
 	{
-		if (Spheroid)
-		{
-			Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(),0));
-
-			Spheroid->Collision->SetLinearDamping(1000.f);
-
-			//Spheroid->Collision->SetEnableGravity(false);
-			Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
-				EAttachmentRule::SnapToTarget, false));
-		}
+		if (Spheroid) PrepareSpheroidForLaunch();
+		GetWorldTimerManager().SetTimer(ShootOutSequenceTimer, this, &ALevelTransitionDevice::ShootOutSequence, 2.f, false);
 		
-		TL_OperateDoors(EOpenOrClose::Open);
-
-		GetWorldTimerManager().SetTimer(StartImpulseTimer, this, &ALevelTransitionDevice::ShootOutSpheroid, 3.f, false);
 	}
 
 	else if (EntranceOrExit == ELTD_Type::Exit && KeysNeededToOpen <= 0) TL_OperateDoors(EOpenOrClose::Open);
@@ -65,6 +57,16 @@ void ALevelTransitionDevice::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ALevelTransitionDevice::PrepareSpheroidForLaunch()
+{
+	Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	Spheroid->Collision->SetLinearDamping(1000.f);
+
+	Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
+		EAttachmentRule::SnapToTarget, false));
 }
 
 void ALevelTransitionDevice::OperateDoors(EOpenOrClose OpenOrClose, float Timeline)
@@ -79,6 +81,15 @@ void ALevelTransitionDevice::OperateDoors(EOpenOrClose OpenOrClose, float Timeli
 		LeftDoor->SetRelativeRotation(UKismetMathLibrary::RLerp(LeftDoorOpen, LeftDoorClosed, Timeline, true));
 		RightDoor->SetRelativeRotation(UKismetMathLibrary::RLerp(RightDoorOpen, RightDoorClosed, Timeline, true));
 	}
+}
+
+void ALevelTransitionDevice::ShootOutSequence()
+{
+	GameModeRef->PlayHUDCountdown();
+
+	TL_OperateDoors(EOpenOrClose::Open);
+
+	GetWorldTimerManager().SetTimer(StartImpulseTimer, this, &ALevelTransitionDevice::ShootOutSpheroid, 3.f, false);
 }
 
 void ALevelTransitionDevice::ShootOutSpheroid()
