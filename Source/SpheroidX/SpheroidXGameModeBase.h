@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Blueprint/UserWidget.h"
+#include "MyEnums.h"
 #include "SpheroidXGameModeBase.generated.h"
 
 /**
@@ -17,11 +18,20 @@ class SPHEROIDX_API ASpheroidXGameModeBase : public AGameModeBase
 
 public:
 
-	UFUNCTION(BlueprintImplementableEvent)
-		void PlayHUDCountdown();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class AAvatar* Spheroid;
 
-	UFUNCTION(BlueprintImplementableEvent)
-		void PlayHUD_Anim_ReachedGoal();
+	//-------HUD-animations
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void PlayHUDAnimation(EHUDAnimations Animation);
+
+
+	//-------CameraShakes
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void PlayCameraShake(ECameraShakes CameraShake);
+
+	virtual void BeginPlay() override;
+
 };
 
 

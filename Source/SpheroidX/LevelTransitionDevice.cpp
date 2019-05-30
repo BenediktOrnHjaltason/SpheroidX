@@ -61,7 +61,9 @@ void ALevelTransitionDevice::Tick(float DeltaTime)
 
 void ALevelTransitionDevice::PrepareSpheroidForLaunch()
 {
-	Spheroid->SetActorHiddenInGame(false);
+	Spheroid->PlaneMesh->SetVisibility(true);
+	Spheroid->Exhaust->SetVisibility(true);
+
 	Spheroid->SetActorRotation(FRotator(0.f, 0.f, 0.f));
 
 	Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -88,7 +90,7 @@ void ALevelTransitionDevice::OperateDoors(EOpenOrClose OpenOrClose, float Timeli
 
 void ALevelTransitionDevice::ShootOutSequence()
 {
-	GameModeRef->PlayHUDCountdown();
+	GameModeRef->PlayHUDAnimation(EHUDAnimations::CountDown);
 
 	TL_OperateDoors(EOpenOrClose::Open);
 
@@ -128,6 +130,6 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 
 		TL_OperateDoors(EOpenOrClose::Close);
 
-		GameModeRef->PlayHUD_Anim_ReachedGoal();
+		GameModeRef->PlayHUDAnimation(EHUDAnimations::ReachedGoal);
 	}
 }

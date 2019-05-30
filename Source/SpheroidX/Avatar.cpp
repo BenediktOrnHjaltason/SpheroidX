@@ -6,6 +6,7 @@
 #include "LevelTransitionDevice.h"
 #include "SpheroidXGameModeBase.h"
 #include "EngineUtils.h"
+#include "Kismet/KismetMaterialLibrary.h"
 
 // Sets default values
 AAvatar::AAvatar()
@@ -21,6 +22,7 @@ AAvatar::AAvatar()
 	
 	Thruster = CreateDefaultSubobject<UPhysicsThrusterComponent>(TEXT("Thruster"));
 	Exhaust = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Exhaust"));
+	EffectPlane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EffectPlane"));
 
 	RootComponent = Collision;
 
@@ -31,6 +33,7 @@ AAvatar::AAvatar()
 	SpringArm->SetupAttachment(Collision);
 	Camera->SetupAttachment(SpringArm);
 	Exhaust->SetupAttachment(Collision);
+	EffectPlane->SetupAttachment(Collision);
 	
 }
 
@@ -39,8 +42,17 @@ void AAvatar::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
+	CurrentWorld = GetWorld();
 	GameModeRef = Cast<ASpheroidXGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
+	//EffectMID = EffectPlane->CreateDynamicMaterialInstance(0);
+
+	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/Avatar/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
+		NULL, LOAD_None, NULL);
+
+	if (MaterialParameters) UE_LOG(LogTemp, Warning, TEXT("BeginPlay: We have reference to MaterialParameterCollection"));
+	
 
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &AAvatar::Overlaps);
 
@@ -80,9 +92,6 @@ void AAvatar::Tick(float DeltaTime)
 	ExhaustMID->SetScalarParameterValue("Opacity", InputMultiplier);
 	Exhaust->SetRelativeScale3D(FVector(0.5f, UKismetMathLibrary::Lerp(0.5f, 1.0f, InputMultiplier), 1));
 		
-
-	//UE_LOG(LogTemp, Warning, TEXT("Degrees: %f"), DegreesXRotation)
-
 }
 
 // Called to bind functionality to input
@@ -98,13 +107,11 @@ void AAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AAvatar::SpheroidXAxis(float AxisValue)
 {
 	SpheroidXValue = AxisValue;
-	//UE_LOG(LogTemp, Warning, TEXT("X-value: %f"),AxisValue)
 }
 
 void AAvatar::SpheroidYAxis(float AxisValue)
 {
 	SpheroidYValue = AxisValue;
-	//UE_LOG(LogTemp, Warning, TEXT("Y-value: %f"), AxisValue)
 }
 
 void AAvatar::IncrementKeys()
@@ -125,13 +132,22 @@ void AAvatar::StopMomentum()
 void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic) DeathSequence();
+	//Collidig with structure
+	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
+	{
+		UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", DeathColor);
+
+		DeathSequence();
+	}
 }
 
 void AAvatar::DeathSequence()
-{
+{	
+	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
+	TL_DeathEffect();
 	Collision->SetLinearDamping(1000);
-	SetActorHiddenInGame(true);
+	PlaneMesh->SetVisibility(false);
+	Exhaust->SetVisibility(false);
 	DeathLocation = GetActorLocation();
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 
@@ -147,4 +163,15 @@ void AAvatar::AfterMove()
 {
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
 	LevelEntrance->TL_OperateDoors(EOpenOrClose::Close, true);
+}
+
+
+void AAvatar::DeathEffect(float TimelineScale)
+{
+	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(Small, Big, TimelineScale));
+}
+
+void AAvatar::DeathEffectCleanUp()
+{
+	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 0);
 }

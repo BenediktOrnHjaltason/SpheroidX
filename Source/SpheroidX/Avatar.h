@@ -12,6 +12,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Engine/StaticMeshActor.h"
 #include "TimerManager.h"
+#include "Materials/MaterialParameterCollection.h"
 #include "Avatar.generated.h"
 
 UCLASS()
@@ -32,7 +33,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		UCameraComponent* Camera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -41,7 +42,13 @@ public:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* Exhaust;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* EffectPlane;
+
 	UMaterialInstanceDynamic* ExhaustMID;
+	UMaterialInstanceDynamic* EffectMID;
+
+	UMaterialParameterCollection* MaterialParameters;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class ALevelTransitionDevice* LevelExit;
@@ -49,11 +56,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class ALevelTransitionDevice* LevelEntrance;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class ASpheroidXGameModeBase* GameModeRef;
 
 	FVector EntranceAttachLoc{ 0,0,0 };
 	FVector ExitAttachLoc{ 0,0,0 };
 
+	UWorld* CurrentWorld;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Thrust)
 		float BaseThrustStrength;
@@ -77,11 +86,37 @@ public:
 		int Keys = 0;
 
 		void IncrementKeys();
-		//------------STATS-----------//
+		//------------/STATS-----------//
 		
-		
+
+		//----------POWERS------------//
+
 		void StopMomentum();
-		
+
+		//----------/POWERS------------//
+
+		//----------EFFECT_PLANE------//
+
+		FLinearColor DeathColor{ 1.0f, 0.f, 0.f };
+		FLinearColor BoostColor{0.f, 0.3836554f, 0.7791665f };
+
+		FVector FrontPosition{ -1.f, 0.f, 0.f };
+		FVector BackPosition{ 1.f, 0.f, 0.f };
+
+		FVector Small{ 0.4f, 0.4, 1.f };
+		FVector Big{ 2.f, 2.f, 1.f };
+
+		UFUNCTION(BlueprintImplementableEvent)
+			void TL_DeathEffect();
+
+		UFUNCTION(BlueprintCallable)
+			void DeathEffect(float TimelineScale);
+
+		UFUNCTION(BlueprintCallable)
+			void DeathEffectCleanUp();
+
+
+		//----------/EFFECT_PLANE------//
 		UFUNCTION()
 			void Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 				UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);

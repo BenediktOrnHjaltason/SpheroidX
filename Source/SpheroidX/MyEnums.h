@@ -39,3 +39,16 @@ class SPHEROIDX_API UMyEnums : public UUserDefinedEnum
 	GENERATED_BODY()
 	
 };
+
+UENUM(BlueprintType)
+enum class EHUDAnimations : uint8
+{
+	CountDown			UMETA(DisplayName = "CountDown"),
+	ReachedGoal			UMETA(DisplayName = "ReachedGoal")
+};
+
+UENUM(BlueprintType)
+enum class ECameraShakes : uint8
+{
+	Death				UMETA(DisplayName = "Death"),
+};
