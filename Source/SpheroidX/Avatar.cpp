@@ -7,6 +7,7 @@
 #include "SpheroidXGameModeBase.h"
 #include "EngineUtils.h"
 #include "Kismet/KismetMaterialLibrary.h"
+#include "Portal.h"
 
 // Sets default values
 AAvatar::AAvatar()
@@ -48,7 +49,7 @@ void AAvatar::BeginPlay()
 	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
 	//EffectMID = EffectPlane->CreateDynamicMaterialInstance(0);
 
-	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/Avatar/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
+	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Blueprints/Avatar/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
 		NULL, LOAD_None, NULL);
 
 	if (MaterialParameters) UE_LOG(LogTemp, Warning, TEXT("BeginPlay: We have reference to MaterialParameterCollection"));
@@ -70,6 +71,8 @@ void AAvatar::BeginPlay()
 			EntranceAttachLoc = LevelEntrance->PawnAttachLocation->GetComponentLocation();
 		}
 	}
+
+	LevelPortal = CurrentWorld->SpawnActor<APortal>(PortalToSpawn, GetActorLocation(), FRotator(0));
 }
 
 // Called every frame
@@ -103,6 +106,7 @@ void AAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("SpheroidY", this, &AAvatar::SpheroidYAxis);
 	PlayerInputComponent->BindAction("StopMomentum", IE_Pressed, this, &AAvatar::StopMomentum);
 	PlayerInputComponent->BindAction("Boost", IE_Pressed, this, &AAvatar::BoostProxy);
+	PlayerInputComponent->BindAction("Portal", IE_Pressed, this, &AAvatar::UsePortal);
 }
 
 void AAvatar::SpheroidXAxis(float AxisValue)
@@ -210,3 +214,25 @@ void AAvatar::BoostProxy()
 	TL_BoostEffect();
 }
 
+void AAvatar::UsePortal()
+{
+	bMakeOrTravel = !bMakeOrTravel;
+
+	//False for make, true for travel to
+	if (!bMakeOrTravel)
+	{
+		LevelPortal->SetActorLocation(GetActorLocation() + SpawnOffsett);
+		LevelPortal->SetActorHiddenInGame(false);
+	}
+
+	else
+	{
+		SetActorLocation(LevelPortal->GetActorLocation() - SpawnOffsett);
+		GetWorldTimerManager().SetTimer(PortalDisappearTimer, this, &AAvatar::PortalDissapear, 1.f, false);
+	}
+}
+
+void AAvatar::PortalDissapear()
+{
+	LevelPortal->SetActorHiddenInGame(true);
+}

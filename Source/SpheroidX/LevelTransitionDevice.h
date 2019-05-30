@@ -67,6 +67,9 @@ public:
 	FRotator RightDoorOpen{ -35.f, 810.f, 90.f };
 	//END Doors
 
+	UPROPERTY(EditAnywhere)
+	USoundBase* Sound_ReachedGoal;
+
 	FTimerHandle StartImpulseTimer;
 	FTimerHandle EnableSpheroidInputTimer;
 	FTimerHandle ShootOutSequenceTimer;

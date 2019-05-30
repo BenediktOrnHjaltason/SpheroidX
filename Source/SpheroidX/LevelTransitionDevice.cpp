@@ -46,7 +46,6 @@ void ALevelTransitionDevice::BeginPlay()
 	{
 		if (Spheroid) PrepareSpheroidForLaunch();
 		GetWorldTimerManager().SetTimer(ShootOutSequenceTimer, this, &ALevelTransitionDevice::ShootOutSequence, 2.f, false);
-		
 	}
 
 	else if (EntranceOrExit == ELTD_Type::Exit && KeysNeededToOpen <= 0) TL_OperateDoors(EOpenOrClose::Open);
@@ -116,6 +115,8 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 {
 	if (EntranceOrExit == ELTD_Type::Exit)
 	{
+		UGameplayStatics::PlaySound2D(GetWorld(), Sound_ReachedGoal);
+
 		Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		Spheroid->SetActorTickEnabled(false);
 		Spheroid->ExhaustMID->SetScalarParameterValue("Opacity", 0.f);
@@ -126,7 +127,6 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 
 		Spheroid->Collision->SetLinearDamping(1000.f);
 		Spheroid->Collision->SetAngularDamping(1000.f);
-		Spheroid->Collision->SetEnableGravity(false);
 
 		TL_OperateDoors(EOpenOrClose::Close);
 

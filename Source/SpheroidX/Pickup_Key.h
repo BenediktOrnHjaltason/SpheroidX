@@ -23,9 +23,14 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void PlayPickupSound() override;
+
 	UMaterialInstanceDynamic* GrowerMID;
 
 	FVector GrowerScale;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* Sound_Pickup;
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void TL_RuntimeEffect();

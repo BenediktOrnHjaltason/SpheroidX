@@ -161,7 +161,26 @@ public:
 
 		FTimerHandle MoveToEntranceHandle;
 
-		//------------DEATH-----------//
+		//------------/DEATH-----------//
+
+		//------------Portal-----------//
+
+		class APortal* LevelPortal;
+
+		UPROPERTY(EditAnywhere)
+		TSubclassOf<class APortal> PortalToSpawn;
+
+		//False for make, true for travel
+		bool bMakeOrTravel = true;
+
+		FVector SpawnOffsett{ 5.f, 0.f, 0.f };
+
+		void UsePortal();
+
+		FTimerHandle PortalDisappearTimer;
+		void PortalDissapear();
+		//------------/Portal-----------//
+
 				
 protected:
 	// Called when the game starts or when spawned

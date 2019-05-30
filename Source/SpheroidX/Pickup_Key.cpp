@@ -3,6 +3,7 @@
 
 #include "Pickup_Key.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 APickup_Key::APickup_Key()
 {
@@ -34,4 +35,9 @@ void APickup_Key::RuntimeEffect(float Grower, float MID_Opacity)
 	EffectPlane->SetRelativeScale3D(GrowerScale);
 
 	GrowerMID->SetScalarParameterValue("Opacity", MID_Opacity);
+}
+
+void APickup_Key::PlayPickupSound()
+{
+	UGameplayStatics::PlaySound2D(GetWorld(), Sound_Pickup);
 }

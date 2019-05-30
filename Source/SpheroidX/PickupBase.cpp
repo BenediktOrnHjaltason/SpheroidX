@@ -48,5 +48,11 @@ void APickupBase::PickedUp(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	if (PickupType == EPickupType::Key)
 	{
 		Spheroid->IncrementKeys();
+		PlayPickupSound();
 	}
+}
+
+void APickupBase::PlayPickupSound()
+{
+	//Unreal dont like abstract base classes
 }
