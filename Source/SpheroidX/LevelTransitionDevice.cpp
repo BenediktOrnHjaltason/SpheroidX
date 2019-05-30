@@ -21,7 +21,7 @@ ALevelTransitionDevice::ALevelTransitionDevice()
 	PawnAttachLocation = CreateDefaultSubobject<USceneComponent>(TEXT("Spheroid Attach"));
 
 	RootComponent = Collision;
-	Collision->SetSphereRadius(40);
+	Collision->SetSphereRadius(45);
 
 	Base->SetupAttachment(Collision);
 	LeftDoor->SetupAttachment(Collision);

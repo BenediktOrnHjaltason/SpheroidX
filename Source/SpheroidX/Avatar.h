@@ -97,14 +97,12 @@ public:
 
 		//----------EFFECT_PLANE------//
 
-		FLinearColor DeathColor{ 1.0f, 0.f, 0.f };
-		FLinearColor BoostColor{0.f, 0.3836554f, 0.7791665f };
-
-		FVector FrontPosition{ -1.f, 0.f, 0.f };
-		FVector BackPosition{ 1.f, 0.f, 0.f };
-
 		FVector Small{ 0.4f, 0.4, 1.f };
-		FVector Big{ 2.f, 2.f, 1.f };
+
+		//Death
+		FLinearColor DeathColor{ 1.0f, 0.f, 0.f };
+		
+		FVector DeathBig{ 2.f, 2.f, 1.f };
 
 		UFUNCTION(BlueprintImplementableEvent)
 			void TL_DeathEffect();
@@ -113,7 +111,32 @@ public:
 			void DeathEffect(float TimelineScale);
 
 		UFUNCTION(BlueprintCallable)
-			void DeathEffectCleanUp();
+			void EffectCleanUp();
+
+		//Boost
+
+		FVector BoostBig{ 2.f, 2.f, 1.f };
+
+		FLinearColor BoostColor{ 0.f, 0.3836554f, 0.7791665f };
+
+
+		UFUNCTION(BlueprintImplementableEvent)
+			void TL_BoostEffect();
+
+		UFUNCTION(BlueprintCallable)
+			void BoostEffect(float TimelineScale, float TimelineOpacity);
+
+		void BoostProxy();
+
+		bool bIsEffectAllowed = true;
+
+		//Stop momentum
+
+		UFUNCTION(BlueprintImplementableEvent)
+			void TL_StopMomentumEffect();
+
+		UFUNCTION(BlueprintCallable)
+			void StopMomentumEffect(float TimelineScale);
 
 
 		//----------/EFFECT_PLANE------//

@@ -102,6 +102,7 @@ void AAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("SpheroidX", this, &AAvatar::SpheroidXAxis);
 	PlayerInputComponent->BindAxis("SpheroidY", this, &AAvatar::SpheroidYAxis);
 	PlayerInputComponent->BindAction("StopMomentum", IE_Pressed, this, &AAvatar::StopMomentum);
+	PlayerInputComponent->BindAction("Boost", IE_Pressed, this, &AAvatar::BoostProxy);
 }
 
 void AAvatar::SpheroidXAxis(float AxisValue)
@@ -126,7 +127,19 @@ void AAvatar::IncrementKeys()
 
 void AAvatar::StopMomentum()
 {
+	if (!bIsEffectAllowed) return;
+	bIsEffectAllowed = false;
+
+	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
+	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
+	TL_StopMomentumEffect();
+
 	Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
+}
+
+void AAvatar::StopMomentumEffect(float TimelineScale)
+{
+	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(BoostBig, Small, TimelineScale));
 }
 
 void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
@@ -146,6 +159,7 @@ void AAvatar::DeathSequence()
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
 	TL_DeathEffect();
 	Collision->SetLinearDamping(1000);
+	Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
 	PlaneMesh->SetVisibility(false);
 	Exhaust->SetVisibility(false);
 	DeathLocation = GetActorLocation();
@@ -168,10 +182,31 @@ void AAvatar::AfterMove()
 
 void AAvatar::DeathEffect(float TimelineScale)
 {
-	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(Small, Big, TimelineScale));
+	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(Small, DeathBig, TimelineScale));
 }
 
-void AAvatar::DeathEffectCleanUp()
+void AAvatar::EffectCleanUp()
 {
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 0);
+	EffectPlane->SetRelativeScale3D(Small);
+	bIsEffectAllowed = true;
 }
+
+void AAvatar::BoostEffect(float TimelineScale, float TimelineOpacity)
+{
+	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(Small, BoostBig, TimelineScale));
+	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", TimelineOpacity);
+}
+
+void AAvatar::BoostProxy()
+{
+	if (!bIsEffectAllowed) return;
+	bIsEffectAllowed = false;
+
+	Collision->AddImpulse(GetActorUpVector() * 10000);
+
+	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
+	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
+	TL_BoostEffect();
+}
+
