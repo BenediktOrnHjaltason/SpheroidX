@@ -6,6 +6,7 @@
 #include "Avatar.h"
 #include "SpheroidXGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMaterialLibrary.h"
 
 
 // Sets default values
@@ -19,6 +20,7 @@ ALevelTransitionDevice::ALevelTransitionDevice()
 	LeftDoor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Left door"));
 	RightDoor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Right door"));
 	PawnAttachLocation = CreateDefaultSubobject<USceneComponent>(TEXT("Spheroid Attach"));
+	BlinkingLight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Blinking Light"));
 
 	RootComponent = Collision;
 	Collision->SetSphereRadius(45);
@@ -27,6 +29,7 @@ ALevelTransitionDevice::ALevelTransitionDevice()
 	LeftDoor->SetupAttachment(Collision);
 	RightDoor->SetupAttachment(Collision);
 	PawnAttachLocation->SetupAttachment(Collision);
+	BlinkingLight->SetupAttachment(Collision);
 
 }
 
@@ -34,6 +37,13 @@ ALevelTransitionDevice::ALevelTransitionDevice()
 void ALevelTransitionDevice::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CurrentWorld = GetWorld();
+
+	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
+		NULL, LOAD_None, NULL);
+
+	SetActorTickInterval(0.75);
 
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &ALevelTransitionDevice::CatchSpheroid);
 
@@ -46,15 +56,27 @@ void ALevelTransitionDevice::BeginPlay()
 	{
 		if (Spheroid) PrepareSpheroidForLaunch();
 		GetWorldTimerManager().SetTimer(ShootOutSequenceTimer, this, &ALevelTransitionDevice::ShootOutSequence, 2.f, false);
+
+		SetActorTickEnabled(false);
+		BlinkingLight->SetVisibility(false);
 	}
 
 	else if (EntranceOrExit == ELTD_Type::Exit && KeysNeededToOpen <= 0) TL_OperateDoors(EOpenOrClose::Open);
+
+	
 }
 
 // Called every frame
 void ALevelTransitionDevice::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	DummyBool = !DummyBool;
+
+	if (DummyBool) BlinkingLight->SetVisibility(true);
+	else BlinkingLight->SetVisibility(false);
+
+		
 
 }
 
@@ -132,4 +154,12 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 
 		GameModeRef->PlayHUDAnimation(EHUDAnimations::ReachedGoal);
 	}
+}
+
+void ALevelTransitionDevice::SetLightToGreen()
+{
+	SetActorTickEnabled(false);
+	BlinkingLight->SetVisibility(true);
+	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Device_BlinkingLight", GreenLight);
+	
 }

@@ -9,6 +9,7 @@
 #include "MyEnums.h"
 #include "TimerManager.h"
 #include "Blueprint/UserWidget.h"
+#include "Materials/MaterialParameterCollection.h"
 #include "LevelTransitionDevice.generated.h"
 
 UCLASS()
@@ -32,6 +33,24 @@ public:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* RightDoor;
 
+	UWorld* CurrentWorld;
+	
+	UMaterialParameterCollection* MaterialParameters;
+
+	//--------BlinkingLights-----------//
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* BlinkingLight;
+
+	FVector RedLight{ 1.f, 0.f, 0.f };
+	FVector GreenLight{ 0.f, 1.f, 0.f };
+
+	bool DummyBool = false;
+
+	UFUNCTION(BlueprintCallable)
+		void SetLightToGreen();
+
+	//--------/BlinkingLights-----------//
+
 	UPROPERTY(EditAnywhere, Category = Sound)
 		USoundBase* Open;
 
@@ -41,7 +60,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = Sound)
 		USoundBase* ReceiveSpheroid;
 
-	UPROPERTY(EditAnywhere, Category = LevelTransitionDevice)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = LevelTransitionDevice)
 		ELTD_Type EntranceOrExit;
 
 	UPROPERTY(EditAnywhere)

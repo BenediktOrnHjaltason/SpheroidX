@@ -49,7 +49,7 @@ void AAvatar::BeginPlay()
 	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
 	//EffectMID = EffectPlane->CreateDynamicMaterialInstance(0);
 
-	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Blueprints/Avatar/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
+	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
 		NULL, LOAD_None, NULL);
 
 	if (MaterialParameters) UE_LOG(LogTemp, Warning, TEXT("BeginPlay: We have reference to MaterialParameterCollection"));
@@ -149,6 +149,7 @@ void AAvatar::StopMomentumEffect(float TimelineScale)
 void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Hitting something"))
 	//Collidig with structure
 	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
 	{
