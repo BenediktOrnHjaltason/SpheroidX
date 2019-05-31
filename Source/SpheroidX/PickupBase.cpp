@@ -3,6 +3,7 @@
 
 #include "PickupBase.h"
 #include "Avatar.h"
+#include "LevelTransitionDevice.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -48,6 +49,7 @@ void APickupBase::PickedUp(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	if (PickupType == EPickupType::Key)
 	{
 		Spheroid->IncrementKeys();
+		++Spheroid->LevelExit->SpheroidKeyCount;
 		PlayPickupSound();
 	}
 }

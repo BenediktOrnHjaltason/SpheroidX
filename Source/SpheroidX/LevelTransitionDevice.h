@@ -10,6 +10,7 @@
 #include "TimerManager.h"
 #include "Blueprint/UserWidget.h"
 #include "Materials/MaterialParameterCollection.h"
+#include "Runtime/UMG/Public/Components/WidgetComponent.h"
 #include "LevelTransitionDevice.generated.h"
 
 UCLASS()
@@ -38,7 +39,7 @@ public:
 	UMaterialParameterCollection* MaterialParameters;
 
 	//--------BlinkingLights-----------//
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* BlinkingLight;
 
 	FVector RedLight{ 1.f, 0.f, 0.f };
@@ -69,6 +70,12 @@ public:
 	class AAvatar* Spheroid;
 
 	class ASpheroidXGameModeBase* GameModeRef;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		int SpheroidKeyCount = 0;
+
+	
+
 
 	//START Doors
 
@@ -106,7 +113,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void CreateHUD();
 
-	UPROPERTY(EditAnywhere, Category = Stats)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
 		int KeysNeededToOpen;
 
 	UFUNCTION()

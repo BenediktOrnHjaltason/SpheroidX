@@ -62,7 +62,6 @@ void ALevelTransitionDevice::BeginPlay()
 	}
 
 	else if (EntranceOrExit == ELTD_Type::Exit && KeysNeededToOpen <= 0) TL_OperateDoors(EOpenOrClose::Open);
-
 	
 }
 
@@ -73,8 +72,8 @@ void ALevelTransitionDevice::Tick(float DeltaTime)
 
 	DummyBool = !DummyBool;
 
-	if (DummyBool) BlinkingLight->SetVisibility(true);
-	else BlinkingLight->SetVisibility(false);
+	if (DummyBool) BlinkingLight->SetVisibility(true,true);
+	else BlinkingLight->SetVisibility(false,true);
 
 		
 

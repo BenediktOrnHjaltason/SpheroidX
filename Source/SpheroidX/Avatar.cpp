@@ -208,6 +208,7 @@ void AAvatar::BoostProxy()
 	if (!bIsEffectAllowed) return;
 	bIsEffectAllowed = false;
 
+	Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 	Collision->AddImpulse(GetActorUpVector() * 10000);
 
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
