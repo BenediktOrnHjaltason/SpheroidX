@@ -38,6 +38,7 @@ public:
 	
 	UMaterialParameterCollection* MaterialParameters;
 
+
 	//--------BlinkingLights-----------//
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* BlinkingLight;

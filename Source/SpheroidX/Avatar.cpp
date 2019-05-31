@@ -123,7 +123,7 @@ void AAvatar::IncrementKeys()
 {
 	++Keys;
 
-	if (Keys >= LevelExit->KeysNeededToOpen)
+	if (Keys >= LevelExit->KeysNeededToOpen && LevelExit->KeysNeededToOpen != 0)
 	{
 		LevelExit->TL_OperateDoors(EOpenOrClose::Open);
 	}
@@ -169,6 +169,7 @@ void AAvatar::DeathSequence()
 	Exhaust->SetVisibility(false);
 	DeathLocation = GetActorLocation();
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Ignore);
 
 	GetWorldTimerManager().SetTimer(MoveToEntranceHandle, this, &AAvatar::TL_MoveToEntrance, 1.25f, false);
 }
@@ -181,6 +182,7 @@ void AAvatar::MoveToEntrance(float Timeline)
 void AAvatar::AfterMove()
 {
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Overlap);
 	LevelEntrance->TL_OperateDoors(EOpenOrClose::Close, true);
 }
 

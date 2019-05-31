@@ -18,7 +18,7 @@ public:
 	// Sets default values for this actor's properties
 	APickupBase();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USphereComponent* Collision;
 
 	UPROPERTY(EditAnywhere)
