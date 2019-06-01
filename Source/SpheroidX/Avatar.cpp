@@ -171,6 +171,8 @@ void AAvatar::DeathSequence()
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Ignore);
 
+	GameModeRef->NotifiedOfDeath();
+
 	GetWorldTimerManager().SetTimer(MoveToEntranceHandle, this, &AAvatar::TL_MoveToEntrance, 1.25f, false);
 }
 

@@ -32,6 +32,9 @@ public:
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void NotifiedOfDeath();
+
 };
 
 
