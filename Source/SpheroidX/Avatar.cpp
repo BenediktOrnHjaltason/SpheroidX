@@ -155,6 +155,7 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 	{
 		UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", DeathColor);
 
+		bIsFirstTimeOnLevel = false;
 		DeathSequence();
 	}
 }
@@ -212,7 +213,10 @@ void AAvatar::BoostProxy()
 	if (!bIsEffectAllowed) return;
 	bIsEffectAllowed = false;
 
+
+	if (Collision->GetPhysicsLinearVelocity().Z < 0)
 	Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
+
 	Collision->AddImpulse(GetActorUpVector() * 10000);
 
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
@@ -222,20 +226,36 @@ void AAvatar::BoostProxy()
 
 void AAvatar::UsePortal()
 {
+	//False for make, true for travel to
 	bMakeOrTravel = !bMakeOrTravel;
 
-	//False for make, true for travel to
-	if (!bMakeOrTravel)
+	if (bMakeOrTravel)
 	{
-		LevelPortal->SetActorLocation(GetActorLocation() + SpawnOffsett);
-		LevelPortal->SetActorHiddenInGame(false);
+		Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
+		Exhaust->SetVisibility(false);
+		EffectPlane->SetVisibility(false);
+		PortalMorph();
+		GetWorldTimerManager().SetTimer(PortalDisappearTimer, this, &AAvatar::TravelPortalTimerProxy, 0.25f, false);
 	}
 
 	else
 	{
+		LevelPortal->SetActorLocation(GetActorLocation() + SpawnOffsett);
+		LevelPortal->SetActorHiddenInGame(false);
+	}
+}
+
+void AAvatar::TravelPortalTimerProxy()
+{
 		SetActorLocation(LevelPortal->GetActorLocation() - SpawnOffsett);
 		GetWorldTimerManager().SetTimer(PortalDisappearTimer, this, &AAvatar::PortalDissapear, 1.f, false);
-	}
+}
+
+void AAvatar::PortalMorphCleanUp()
+{
+	Exhaust->SetVisibility(true);
+	EffectPlane->SetVisibility(true);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
 }
 
 void AAvatar::PortalDissapear()

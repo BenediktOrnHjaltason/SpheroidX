@@ -110,16 +110,29 @@ void ALevelTransitionDevice::OperateDoors(EOpenOrClose OpenOrClose, float Timeli
 
 void ALevelTransitionDevice::ShootOutSequence()
 {
-	GameModeRef->PlayHUDAnimation(EHUDAnimations::CountDown);
+	if (Spheroid->bIsFirstTimeOnLevel)
+	{
+		GameModeRef->PlayHUDAnimation(EHUDAnimations::CountDown);
 
-	TL_OperateDoors(EOpenOrClose::Open);
+		TL_OperateDoors(EOpenOrClose::Open);
 
-	GetWorldTimerManager().SetTimer(StartImpulseTimer, this, &ALevelTransitionDevice::ShootOutSpheroid, 3.f, false);
+		GetWorldTimerManager().SetTimer(StartImpulseTimer, this, &ALevelTransitionDevice::ShootOutSpheroid, 3.f, false);
+	}
+
+	else
+	{
+		GameModeRef->PlayHUDAnimation(EHUDAnimations::RespawnGo);
+		TL_OperateDoors(EOpenOrClose::Open, true);
+		GetWorldTimerManager().SetTimer(StartImpulseTimer, this, &ALevelTransitionDevice::ShootOutSpheroid, 1.f, false);
+	}
+
+
 }
 
 void ALevelTransitionDevice::ShootOutSpheroid()
 {
 	Spheroid->Collision->SetLinearDamping(0);
+	Spheroid->Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
 	Spheroid->Collision->AddImpulse(GetActorUpVector() * 15000);
 

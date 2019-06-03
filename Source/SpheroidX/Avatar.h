@@ -24,7 +24,7 @@ public:
 	// Sets default values for this pawn's properties
 	AAvatar();
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* PlaneMesh;
 
 	UPROPERTY(VisibleAnywhere)
@@ -80,6 +80,8 @@ public:
 		void SpheroidXAxis(float AxisValue);
 
 		void SpheroidYAxis(float AxisValue);
+
+		bool bIsFirstTimeOnLevel = true;
 
 		//------------STATS-----------//
 		UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -176,6 +178,16 @@ public:
 		FVector SpawnOffsett{ 5.f, 0.f, 0.f };
 
 		void UsePortal();
+
+		void TravelPortalTimerProxy();
+
+		FTimerHandle PortalMorphTimer;
+
+		UFUNCTION(BlueprintImplementableEvent)
+			void PortalMorph();
+
+		UFUNCTION(BlueprintCallable)
+			void PortalMorphCleanUp();
 
 		FTimerHandle PortalDisappearTimer;
 		void PortalDissapear();

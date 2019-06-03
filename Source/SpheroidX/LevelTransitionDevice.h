@@ -107,7 +107,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShootOutSequence();
 	
+	UFUNCTION(BlueprintCallable)
 	void ShootOutSpheroid();
+
 	void ReactivateSpheroidInput();
 
 	//HUD is created here and simultaneaously gives gamemode a reference to it

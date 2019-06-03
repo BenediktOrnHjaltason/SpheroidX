@@ -44,7 +44,8 @@ UENUM(BlueprintType)
 enum class EHUDAnimations : uint8
 {
 	CountDown			UMETA(DisplayName = "CountDown"),
-	ReachedGoal			UMETA(DisplayName = "ReachedGoal")
+	ReachedGoal			UMETA(DisplayName = "ReachedGoal"),
+	RespawnGo			UMETA(DisplayName = "RespawnGo")
 };
 
 UENUM(BlueprintType)
