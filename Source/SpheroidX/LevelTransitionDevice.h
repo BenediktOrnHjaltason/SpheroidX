@@ -8,9 +8,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "MyEnums.h"
 #include "TimerManager.h"
-#include "Blueprint/UserWidget.h"
 #include "Materials/MaterialParameterCollection.h"
-#include "Runtime/UMG/Public/Components/WidgetComponent.h"
 #include "LevelTransitionDevice.generated.h"
 
 UCLASS()

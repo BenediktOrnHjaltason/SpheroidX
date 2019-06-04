@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "Blueprint/UserWidget.h"
 #include "MyEnums.h"
 #include "SpheroidXGameModeBase.generated.h"
 

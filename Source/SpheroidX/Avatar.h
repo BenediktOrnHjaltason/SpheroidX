@@ -95,7 +95,7 @@ public:
 
 		//----------POWERS------------//
 
-		void StopMomentum();
+		
 
 		//----------/POWERS------------//
 
@@ -130,6 +130,7 @@ public:
 		UFUNCTION(BlueprintCallable)
 			void BoostEffect(float TimelineScale, float TimelineOpacity);
 
+		UFUNCTION(BlueprintCallable)
 		void BoostProxy();
 
 		bool bIsEffectAllowed = true;
@@ -142,6 +143,8 @@ public:
 		UFUNCTION(BlueprintCallable)
 			void StopMomentumEffect(float TimelineScale);
 
+		UFUNCTION(BlueprintCallable)
+		void StopMomentum();
 
 		//----------/EFFECT_PLANE------//
 		UFUNCTION()
