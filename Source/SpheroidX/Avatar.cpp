@@ -150,12 +150,12 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Hitting something"))
-	//Collidig with structure
+		//Collidig with structure
+
 	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
 	{
 		UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", DeathColor);
 
-		bIsFirstTimeOnLevel = false;
 		DeathSequence();
 	}
 }
@@ -171,8 +171,12 @@ void AAvatar::DeathSequence()
 	DeathLocation = GetActorLocation();
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Ignore);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel1, ECollisionResponse::ECR_Ignore);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Destructible, ECollisionResponse::ECR_Ignore);
 
 	GameModeRef->NotifiedOfDeath();
+
+	bIsFirstTimeOnLevel = false;
 
 	GetWorldTimerManager().SetTimer(MoveToEntranceHandle, this, &AAvatar::TL_MoveToEntrance, 1.25f, false);
 }
@@ -186,6 +190,8 @@ void AAvatar::AfterMove()
 {
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Overlap);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel1, ECollisionResponse::ECR_Overlap);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Destructible, ECollisionResponse::ECR_Overlap);
 	LevelEntrance->TL_OperateDoors(EOpenOrClose::Close, true);
 }
 

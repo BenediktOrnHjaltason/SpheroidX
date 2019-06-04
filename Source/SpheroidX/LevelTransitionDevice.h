@@ -65,7 +65,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = LevelTransitionDevice)
 		ELTD_Type EntranceOrExit;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		USceneComponent* PawnAttachLocation;
 
 	class AAvatar* Spheroid;

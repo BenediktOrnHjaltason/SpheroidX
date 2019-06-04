@@ -59,7 +59,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class ASpheroidXGameModeBase* GameModeRef;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector EntranceAttachLoc{ 0,0,0 };
+
 	FVector ExitAttachLoc{ 0,0,0 };
 
 	UWorld* CurrentWorld;
@@ -147,6 +149,7 @@ public:
 				UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 		//------------DEATH-----------//
+		UFUNCTION(BlueprintCallable)
 		void DeathSequence();
 
 		UFUNCTION(BlueprintImplementableEvent)
