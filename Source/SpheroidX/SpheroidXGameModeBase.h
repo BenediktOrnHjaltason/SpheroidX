@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "MyEnums.h"
+#include "Kismet/KismetMaterialLibrary.h"
+#include "Materials/MaterialParameterCollection.h"
 #include "SpheroidXGameModeBase.generated.h"
 
 /**
@@ -33,6 +35,21 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void NotifiedOfDeath();
+
+	//Colors for active status
+
+	UMaterialParameterCollection* MaterialParameters;
+
+	FVector Status_Active = { 0.f, 0.3589754f, 0.6802084f };
+	FVector Status_Inactive = { 0.052083f, 0.052083f, 0.052083f };
+
+	UFUNCTION(BlueprintCallable)
+	void Status_TurnToActive();
+
+	UFUNCTION(BlueprintCallable)
+	void Status_TurnToInactive();
+
+	UWorld* CurrentWorld;
 
 };
 
