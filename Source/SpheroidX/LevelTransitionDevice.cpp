@@ -142,6 +142,8 @@ void ALevelTransitionDevice::ShootOutSpheroid()
 void ALevelTransitionDevice::ReactivateSpheroidInput()
 {
 	Spheroid->EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (!GameModeRef->bIsTutorialLevel)
 	Spheroid->TimeAtShootOut = CurrentWorld->GetRealTimeSeconds();
 }
 
@@ -150,16 +152,12 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 {
 	if (EntranceOrExit == ELTD_Type::Exit)
 	{
-		//float
-		Spheroid->SecondsAtGoal_f = CurrentWorld->GetRealTimeSeconds() - Spheroid->TimeAtShootOut;
-		//int
-		Spheroid->MinutesAtGoal = Spheroid->SecondsAtGoal_f / 60;
-		//int
-		Spheroid->SecondsAtGoal = Spheroid->SecondsAtGoal_f - Spheroid->MinutesAtGoal*60;
-		//float
-		Spheroid->RemainderDecimals = (Spheroid->SecondsAtGoal_f - Spheroid->SecondsAtGoal) *100;
+		Spheroid->CalculateTime();
 
-		Spheroid->DisplayTime();
+		if (!GameModeRef->bIsTutorialLevel)
+		{
+			Spheroid->DisplayTime();
+		}
 
 
 		UGameplayStatics::PlaySound2D(GetWorld(), Sound_ReachedGoal);

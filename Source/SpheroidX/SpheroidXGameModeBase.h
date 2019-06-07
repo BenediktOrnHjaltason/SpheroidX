@@ -50,6 +50,11 @@ public:
 	void Status_TurnToInactive();
 
 	UWorld* CurrentWorld;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool bIsTutorialLevel = false;
+
+	void ResetPickups();
 };
 
 

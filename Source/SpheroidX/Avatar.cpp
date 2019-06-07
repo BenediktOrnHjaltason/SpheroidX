@@ -176,7 +176,15 @@ void AAvatar::DeathSequence()
 
 	GameModeRef->NotifiedOfDeath();
 
+	if (!GameModeRef->bIsTutorialLevel)
+	{
+		GameModeRef->ResetPickups();
+		LevelExit->SpheroidKeyCount = 0;
+	}
+
 	bIsFirstTimeOnLevel = false;
+
+	Keys = 0;
 
 	GetWorldTimerManager().SetTimer(MoveToEntranceHandle, this, &AAvatar::TL_MoveToEntrance, 1.25f, false);
 }
@@ -267,4 +275,18 @@ void AAvatar::PortalMorphCleanUp()
 void AAvatar::PortalDissapear()
 {
 	LevelPortal->SetActorHiddenInGame(true);
+}
+
+
+void AAvatar::CalculateTime()
+{
+	//float
+	SecondsAtGoal_f = CurrentWorld->GetRealTimeSeconds() - TimeAtShootOut;
+	//int
+	MinutesAtGoal = SecondsAtGoal_f / 60;
+	//int
+	SecondsAtGoal = SecondsAtGoal_f - MinutesAtGoal * 60;
+	//float
+	RemainderDecimals = (SecondsAtGoal_f - SecondsAtGoal) * 100;
+
 }

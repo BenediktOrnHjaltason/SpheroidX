@@ -3,6 +3,8 @@
 
 #include "SpheroidXGameModeBase.h"
 #include "Avatar.h"
+#include "EngineUtils.h"
+#include "Pickup_Key.h"
 #include "Kismet/GameplayStatics.h"
 
 void ASpheroidXGameModeBase::BeginPlay()
@@ -24,4 +26,15 @@ void ASpheroidXGameModeBase::Status_TurnToActive()
 void ASpheroidXGameModeBase::Status_TurnToInactive()
 {
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "StatusSwitch", Status_Inactive);
+}
+
+void ASpheroidXGameModeBase::ResetPickups()
+{
+	for (TActorIterator<APickup_Key> KeyItr(GetWorld()); KeyItr; ++KeyItr)
+	{
+		APickup_Key *Key = *KeyItr;
+
+		Key->SetActorEnableCollision(true);
+		Key->SetActorHiddenInGame(false);
+	}
 }

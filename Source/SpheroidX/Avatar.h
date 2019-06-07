@@ -110,6 +110,8 @@ public:
 		UFUNCTION(BlueprintImplementableEvent)
 			void DisplayTime();
 
+		void CalculateTime();
+
 		//------------/TIME------------//
 		
 		
