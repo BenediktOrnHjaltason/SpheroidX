@@ -91,6 +91,27 @@ public:
 
 		void IncrementKeys();
 		//------------/STATS-----------//
+
+		//-------------TIME------------//
+		float TimeAtShootOut;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		float SecondsAtGoal_f;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		int MinutesAtGoal;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		int SecondsAtGoal;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		int RemainderDecimals;
+
+		UFUNCTION(BlueprintImplementableEvent)
+			void DisplayTime();
+
+		//------------/TIME------------//
+		
 		
 
 		//----------POWERS------------//

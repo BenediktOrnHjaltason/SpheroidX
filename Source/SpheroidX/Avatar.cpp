@@ -95,10 +95,6 @@ void AAvatar::Tick(float DeltaTime)
 	
 	ExhaustMID->SetScalarParameterValue("Opacity", InputMultiplier);
 	Exhaust->SetRelativeScale3D(FVector(0.5f, UKismetMathLibrary::Lerp(0.5f, 1.0f, InputMultiplier), 1));
-	
-
-
-	UE_LOG(LogTemp,Warning, TEXT("Velocity: %s"), *Collision->GetPhysicsLinearVelocity().ToString())
 }
 
 // Called to bind functionality to input

@@ -39,7 +39,7 @@ void ALevelTransitionDevice::BeginPlay()
 	Super::BeginPlay();
 
 	CurrentWorld = GetWorld();
-
+	Spheroid = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
 		NULL, LOAD_None, NULL);
 
@@ -47,7 +47,7 @@ void ALevelTransitionDevice::BeginPlay()
 
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &ALevelTransitionDevice::CatchSpheroid);
 
-	Spheroid = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	
 	GameModeRef = Cast<ASpheroidXGameModeBase>(GetWorld()->GetAuthGameMode());
 
 	CreateHUD();
@@ -142,6 +142,7 @@ void ALevelTransitionDevice::ShootOutSpheroid()
 void ALevelTransitionDevice::ReactivateSpheroidInput()
 {
 	Spheroid->EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	Spheroid->TimeAtShootOut = CurrentWorld->GetRealTimeSeconds();
 }
 
 void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
@@ -149,6 +150,18 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 {
 	if (EntranceOrExit == ELTD_Type::Exit)
 	{
+		//float
+		Spheroid->SecondsAtGoal_f = CurrentWorld->GetRealTimeSeconds() - Spheroid->TimeAtShootOut;
+		//int
+		Spheroid->MinutesAtGoal = Spheroid->SecondsAtGoal_f / 60;
+		//int
+		Spheroid->SecondsAtGoal = Spheroid->SecondsAtGoal_f - Spheroid->MinutesAtGoal*60;
+		//float
+		Spheroid->RemainderDecimals = (Spheroid->SecondsAtGoal_f - Spheroid->SecondsAtGoal) *100;
+
+		Spheroid->DisplayTime();
+
+
 		UGameplayStatics::PlaySound2D(GetWorld(), Sound_ReachedGoal);
 
 		Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));

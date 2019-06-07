@@ -50,7 +50,6 @@ public:
 	void Status_TurnToInactive();
 
 	UWorld* CurrentWorld;
-
 };
 
 

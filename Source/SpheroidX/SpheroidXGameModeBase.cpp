@@ -14,8 +14,6 @@ void ASpheroidXGameModeBase::BeginPlay()
 	Spheroid = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
 		NULL, LOAD_None, NULL);
-
-
 }
 
 void ASpheroidXGameModeBase::Status_TurnToActive()
