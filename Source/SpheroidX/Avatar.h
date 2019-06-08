@@ -114,7 +114,23 @@ public:
 
 		//------------/TIME------------//
 		
-		
+
+		//-------Level Management------//
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FName PreviousLevel;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FName CurrentLevel;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FName NextLevel;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		bool bIsFirstLevel = false;
+
+
+
+		//-------/Level Management-----//
 
 		//----------POWERS------------//
 
