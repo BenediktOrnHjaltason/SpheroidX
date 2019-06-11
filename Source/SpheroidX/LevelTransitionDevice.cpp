@@ -152,13 +152,6 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 {
 	if (EntranceOrExit == ELTD_Type::Exit)
 	{
-		Spheroid->CalculateTime();
-
-		if (!GameModeRef->bIsTutorialLevel)
-		{
-			Spheroid->DisplayTime();
-		}
-
 
 		UGameplayStatics::PlaySound2D(GetWorld(), Sound_ReachedGoal);
 

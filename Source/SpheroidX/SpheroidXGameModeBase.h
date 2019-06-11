@@ -55,6 +55,10 @@ public:
 	bool bIsTutorialLevel = false;
 
 	void ResetPickups();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	int LevelIndex = 0;
+
 };
 
 

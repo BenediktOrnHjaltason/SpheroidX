@@ -66,6 +66,8 @@ public:
 
 	UWorld* CurrentWorld;
 
+	class USpheroidGameInstance* GameInstance;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Thrust)
 		float BaseThrustStrength;
 
@@ -110,7 +112,7 @@ public:
 		UFUNCTION(BlueprintImplementableEvent)
 			void DisplayTime();
 
-		void CalculateTime();
+		void CalculateTime(int LevelIndex);
 
 		//------------/TIME------------//
 		
@@ -127,6 +129,9 @@ public:
 
 		UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		bool bIsFirstLevel = false;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		bool bIsTutorialLevel = false;
 
 
 

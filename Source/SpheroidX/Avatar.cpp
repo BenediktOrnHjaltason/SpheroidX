@@ -7,6 +7,7 @@
 #include "SpheroidXGameModeBase.h"
 #include "EngineUtils.h"
 #include "Kismet/KismetMaterialLibrary.h"
+#include "SpheroidGameInstance.h"
 #include "Portal.h"
 
 // Sets default values
@@ -46,6 +47,7 @@ void AAvatar::BeginPlay()
 
 	CurrentWorld = GetWorld();
 	GameModeRef = Cast<ASpheroidXGameModeBase>(GetWorld()->GetAuthGameMode());
+	GameInstance = Cast<USpheroidGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
 	//EffectMID = EffectPlane->CreateDynamicMaterialInstance(0);
@@ -149,8 +151,19 @@ void AAvatar::StopMomentumEffect(float TimelineScale)
 void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Hitting something"))
-		//Collidig with structure
+
+		if (OtherActor->IsA(ALevelTransitionDevice::StaticClass()) && 
+			Cast<ALevelTransitionDevice>(OtherActor)->EntranceOrExit == ELTD_Type::Exit)
+		{
+			CalculateTime(GameModeRef->LevelIndex);
+
+			if (!GameModeRef->bIsTutorialLevel)
+			{
+				DisplayTime();
+			}
+
+			return;
+		}
 
 	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
 	{
@@ -278,15 +291,20 @@ void AAvatar::PortalDissapear()
 }
 
 
-void AAvatar::CalculateTime()
+void AAvatar::CalculateTime(int LevelIndex)
 {
-	//float
-	SecondsAtGoal_f = CurrentWorld->GetRealTimeSeconds() - TimeAtShootOut;
-	//int
-	MinutesAtGoal = SecondsAtGoal_f / 60;
-	//int
-	SecondsAtGoal = SecondsAtGoal_f - MinutesAtGoal * 60;
-	//float
-	RemainderDecimals = (SecondsAtGoal_f - SecondsAtGoal) * 100;
+	float LevelTime = CurrentWorld->GetRealTimeSeconds() - TimeAtShootOut;
 
+	if (GameInstance->GetLevelTime(LevelIndex) == 0 || LevelTime < GameInstance->GetLevelTime(LevelIndex))
+	{
+		GameInstance->SetLevelTime(LevelIndex, LevelTime);
+
+		GameInstance->BreakTime(
+			GameInstance->LevelTimes[LevelIndex],
+			GameInstance->LevelTimesMinutes[LevelIndex],
+			GameInstance->LevelTimesSeconds[LevelIndex],
+			GameInstance->LevelTimesRemaining[LevelIndex]);
+		
+		GameInstance->SaveLevelTimeToDisk();
+	}
 }
