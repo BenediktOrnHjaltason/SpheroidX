@@ -36,7 +36,6 @@ AAvatar::AAvatar()
 	Camera->SetupAttachment(SpringArm);
 	Exhaust->SetupAttachment(Collision);
 	EffectPlane->SetupAttachment(Collision);
-	
 }
 
 // Called when the game starts or when spawned
@@ -151,21 +150,22 @@ void AAvatar::StopMomentumEffect(float TimelineScale)
 void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-
 		if (OtherActor->IsA(ALevelTransitionDevice::StaticClass()) && 
 			Cast<ALevelTransitionDevice>(OtherActor)->EntranceOrExit == ELTD_Type::Exit)
 		{
+			//unlock next level if there is next level
+			if (GameInstance->LevelsLocked.IsValidIndex(GameModeRef->LevelIndex + 1))
+			GameInstance->LevelsLocked[GameModeRef->LevelIndex + 1] = false;
+
 			CalculateTime(GameModeRef->LevelIndex);
 
 			if (!GameModeRef->bIsTutorialLevel)
 			{
 				DisplayTime();
 			}
-
-			return;
 		}
 
-	if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
+	else if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
 	{
 		UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", DeathColor);
 
