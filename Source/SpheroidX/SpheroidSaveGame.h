@@ -35,12 +35,28 @@ public:
 			float time_L1 = 0.f;
 		UPROPERTY(VisibleAnywhere)
 			float time_L2 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L3 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L4 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L5 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L6 = 0.f;
 
 
 		UPROPERTY(VisibleAnywhere)
 			bool Locked_L1 = false;
 		UPROPERTY(VisibleAnywhere)
 			bool Locked_L2 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L3 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L4 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L5 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L6 = true;
 
 		//-----------/SavedData--------------//
 };

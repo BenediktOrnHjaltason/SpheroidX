@@ -136,7 +136,7 @@ void ALevelTransitionDevice::ShootOutSpheroid()
 
 	Spheroid->Collision->AddImpulse(GetActorUpVector() * 15000);
 
-	GetWorldTimerManager().SetTimer(EnableSpheroidInputTimer, this, &ALevelTransitionDevice::ReactivateSpheroidInput, 1.1f, false);
+	GetWorldTimerManager().SetTimer(EnableSpheroidInputTimer, this, &ALevelTransitionDevice::ReactivateSpheroidInput, 0.3f, false);
 }
 
 void ALevelTransitionDevice::ReactivateSpheroidInput()
