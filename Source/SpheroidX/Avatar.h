@@ -179,6 +179,8 @@ public:
 
 		bool bIsEffectAllowed = true;
 
+		bool bIsDeathSequenceRunning = false;
+
 		//Stop momentum
 
 		UFUNCTION(BlueprintImplementableEvent)

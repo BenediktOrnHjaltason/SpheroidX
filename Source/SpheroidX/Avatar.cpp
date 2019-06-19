@@ -132,7 +132,7 @@ void AAvatar::IncrementKeys()
 
 void AAvatar::StopMomentum()
 {
-	if (!bIsEffectAllowed) return;
+	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
 	bIsEffectAllowed = false;
 
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
@@ -140,11 +140,6 @@ void AAvatar::StopMomentum()
 	TL_StopMomentumEffect();
 
 	Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
-}
-
-void AAvatar::StopMomentumEffect(float TimelineScale)
-{
-	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(BoostBig, Small, TimelineScale));
 }
 
 void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
@@ -170,6 +165,7 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 		UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", DeathColor);
 
 		DeathSequence();
+		bIsDeathSequenceRunning = true;
 	}
 }
 
@@ -229,20 +225,14 @@ void AAvatar::EffectCleanUp()
 	bIsEffectAllowed = true;
 }
 
-void AAvatar::BoostEffect(float TimelineScale, float TimelineOpacity)
-{
-	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(Small, BoostBig, TimelineScale));
-	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", TimelineOpacity);
-}
-
 void AAvatar::BoostProxy()
 {
-	if (!bIsEffectAllowed) return;
+	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
 	bIsEffectAllowed = false;
 
 
 	if (Collision->GetPhysicsLinearVelocity().Z < 0)
-	Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
+		Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
 	Collision->AddImpulse(GetActorUpVector() * 10000);
 
@@ -251,8 +241,23 @@ void AAvatar::BoostProxy()
 	TL_BoostEffect();
 }
 
+void AAvatar::BoostEffect(float TimelineScale, float TimelineOpacity)
+{
+
+	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(Small, BoostBig, TimelineScale));
+	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", TimelineOpacity);
+
+}
+
+void AAvatar::StopMomentumEffect(float TimelineScale)
+{
+	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(BoostBig, Small, TimelineScale));
+}
+
+
 void AAvatar::UsePortal()
 {
+	if (bIsDeathSequenceRunning) return;
 	//False for make, true for travel to
 	bMakeOrTravel = !bMakeOrTravel;
 

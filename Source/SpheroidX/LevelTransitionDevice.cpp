@@ -142,6 +142,7 @@ void ALevelTransitionDevice::ShootOutSpheroid()
 void ALevelTransitionDevice::ReactivateSpheroidInput()
 {
 	Spheroid->EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	Spheroid->bIsDeathSequenceRunning = false;
 
 	if (!GameModeRef->bIsTutorialLevel)
 	Spheroid->TimeAtShootOut = CurrentWorld->GetRealTimeSeconds();
