@@ -46,7 +46,6 @@ void USpheroidGameInstance::SaveLevelTimeToDisk()
 {
 	if (LevelTimes.IsValidIndex(0))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Save(): 0 is Valid index"))
 
 		USpheroidSaveGame* SaveObject = Cast<USpheroidSaveGame>(UGameplayStatics::CreateSaveGameObject(USpheroidSaveGame::StaticClass()));
 
@@ -59,7 +58,6 @@ void USpheroidGameInstance::SaveLevelTimeToDisk()
 		UGameplayStatics::SaveGameToSlot(SaveObject, SlotName, UserIndex);
 	}
 
-	else if (!LevelTimes.IsValidIndex(0)) UE_LOG(LogTemp, Warning, TEXT("Save(): 0 is not valid index for LevelTimes"))
 }
 
 void USpheroidGameInstance::LoadLevelTimesFromDisk()
@@ -67,7 +65,6 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 	if (bIsFreshSessionStart && UGameplayStatics::DoesSaveGameExist(SlotName, UserIndex))
 	{
 		bIsFreshSessionStart = false;
-		UE_LOG(LogTemp, Warning, TEXT("Load(): SaveGame Exists Now"))
 
 		USpheroidSaveGame* LoadObject = Cast<USpheroidSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, UserIndex));
 
@@ -78,8 +75,6 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 				if (LevelTimes.IsValidIndex(i) && LoadObject->LevelTimes.IsValidIndex(i) &&
 					LevelsLocked.IsValidIndex(i) && LoadObject->LevelsLocked.IsValidIndex(i))
 				{   
-					UE_LOG(LogTemp, Warning, TEXT("Load(): Index is valid for LevelTimes && LevelsLocked"))
-
 					LevelTimes[i] = *LoadObject->LevelTimes[i];
 					LevelsLocked[i] = *LoadObject->LevelsLocked[i];
 

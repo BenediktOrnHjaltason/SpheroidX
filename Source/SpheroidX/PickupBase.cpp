@@ -3,6 +3,7 @@
 
 #include "PickupBase.h"
 #include "Avatar.h"
+#include "SpheroidXGameModeBase.h"
 #include "LevelTransitionDevice.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -49,8 +50,10 @@ void APickupBase::PickedUp(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	if (PickupType == EPickupType::Key)
 	{
 		Spheroid->IncrementKeys();
+		
 		++Spheroid->LevelExit->SpheroidKeyCount;
 		PlayPickupSound();
+		Spheroid->GameModeRef->PlayHUDAnimation(EHUDAnimations::FadeInOutRemaining);
 	}
 }
 

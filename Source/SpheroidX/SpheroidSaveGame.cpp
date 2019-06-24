@@ -8,7 +8,6 @@ USpheroidSaveGame::USpheroidSaveGame()
 	SaveSlotName = TEXT("SpheroidOne");
 	UserIndex = 0;
 
-	int NumberOfLevels = 6;
 
 	LevelTimes.Init(nullptr, NumberOfLevels);
 	LevelsLocked.Init(nullptr, NumberOfLevels);
@@ -19,6 +18,9 @@ USpheroidSaveGame::USpheroidSaveGame()
 	LevelTimes[3] = &time_L4;
 	LevelTimes[4] = &time_L5;
 	LevelTimes[5] = &time_L6;
+	LevelTimes[6] = &time_L7;
+	LevelTimes[7] = &time_L8;
+	LevelTimes[8] = &time_L9;
 
 	LevelsLocked[0] = &Locked_L1;
 	LevelsLocked[1] = &Locked_L2;
@@ -26,4 +28,7 @@ USpheroidSaveGame::USpheroidSaveGame()
 	LevelsLocked[3] = &Locked_L4;
 	LevelsLocked[4] = &Locked_L5;
 	LevelsLocked[5] = &Locked_L6;
+	LevelsLocked[6] = &Locked_L7;
+	LevelsLocked[7] = &Locked_L8;
+	LevelsLocked[8] = &Locked_L9;
 }

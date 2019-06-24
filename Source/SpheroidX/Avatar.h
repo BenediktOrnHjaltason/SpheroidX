@@ -13,6 +13,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "TimerManager.h"
 #include "Materials/MaterialParameterCollection.h"
+#include "Components/WidgetComponent.h"
 #include "Avatar.generated.h"
 
 UCLASS()
@@ -62,6 +63,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector EntranceAttachLoc{ 0,0,0 };
 
+
 	FVector ExitAttachLoc{ 0,0,0 };
 
 	UWorld* CurrentWorld;
@@ -92,6 +94,9 @@ public:
 		int Keys = 0;
 
 		void IncrementKeys();
+
+		UFUNCTION(BlueprintImplementableEvent)
+			void FadeWidgetInOut();
 		//------------/STATS-----------//
 
 		//-------------TIME------------//

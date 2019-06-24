@@ -45,7 +45,8 @@ enum class EHUDAnimations : uint8
 {
 	CountDown			UMETA(DisplayName = "CountDown"),
 	ReachedGoal			UMETA(DisplayName = "ReachedGoal"),
-	RespawnGo			UMETA(DisplayName = "RespawnGo")
+	RespawnGo			UMETA(DisplayName = "RespawnGo"),
+	FadeInOutRemaining	UMETA(DisplayName = "FadeInOutRemaining")
 };
 
 UENUM(BlueprintType)

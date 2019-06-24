@@ -23,7 +23,7 @@ ALevelTransitionDevice::ALevelTransitionDevice()
 	BlinkingLight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Blinking Light"));
 
 	RootComponent = Collision;
-	Collision->SetSphereRadius(45);
+	Collision->SetSphereRadius(60);
 
 	Base->SetupAttachment(Collision);
 	LeftDoor->SetupAttachment(Collision);
@@ -50,7 +50,6 @@ void ALevelTransitionDevice::BeginPlay()
 	
 	GameModeRef = Cast<ASpheroidXGameModeBase>(GetWorld()->GetAuthGameMode());
 
-	CreateHUD();
 
 	if (EntranceOrExit == ELTD_Type::Entrance)
 	{
@@ -62,6 +61,8 @@ void ALevelTransitionDevice::BeginPlay()
 	}
 
 	else if (EntranceOrExit == ELTD_Type::Exit && KeysNeededToOpen <= 0) TL_OperateDoors(EOpenOrClose::Open);
+
+	else CreateHUD();
 	
 }
 
@@ -74,15 +75,15 @@ void ALevelTransitionDevice::Tick(float DeltaTime)
 
 	if (DummyBool) BlinkingLight->SetVisibility(true,true);
 	else BlinkingLight->SetVisibility(false,true);
-
-		
-
 }
 
 void ALevelTransitionDevice::PrepareSpheroidForLaunch()
 {
+	Spheroid->SetActorTickEnabled(false);
+	Spheroid->Exhaust->SetVisibility(false);
+
+
 	Spheroid->PlaneMesh->SetVisibility(true);
-	Spheroid->Exhaust->SetVisibility(true);
 
 	Spheroid->SetActorRotation(FRotator(0.f, 0.f, 0.f));
 
@@ -144,6 +145,9 @@ void ALevelTransitionDevice::ReactivateSpheroidInput()
 	Spheroid->EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	Spheroid->bIsDeathSequenceRunning = false;
 
+	Spheroid->SetActorTickEnabled(true);
+	Spheroid->Exhaust->SetVisibility(true);
+
 	if (!GameModeRef->bIsTutorialLevel)
 	Spheroid->TimeAtShootOut = CurrentWorld->GetRealTimeSeconds();
 }
@@ -179,4 +183,15 @@ void ALevelTransitionDevice::SetLightToGreen()
 	BlinkingLight->SetVisibility(true);
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Device_BlinkingLight", GreenLight);
 	
+}
+
+void ALevelTransitionDevice::DeactivateExit()
+{
+	SetActorTickEnabled(true);
+	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Device_BlinkingLight", RedLight);
+	SetActorTickEnabled(true);
+
+	TL_OperateDoors(EOpenOrClose::Close);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+
 }

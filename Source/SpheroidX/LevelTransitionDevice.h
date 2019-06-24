@@ -49,6 +49,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SetLightToGreen();
 
+	void DeactivateExit();
+
+
+
 	//--------/BlinkingLights-----------//
 
 	UPROPERTY(EditAnywhere, Category = Sound)

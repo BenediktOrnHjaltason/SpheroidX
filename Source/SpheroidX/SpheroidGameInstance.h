@@ -23,7 +23,7 @@ public:
 	FString SlotName = TEXT("SpheroidOne");
 	uint32 UserIndex = 0;
 
-	int NumberOfLevels = 6;
+	int NumberOfLevels = 9;
 
 	bool bIsFreshSessionStart = true;
 

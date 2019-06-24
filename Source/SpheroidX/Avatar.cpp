@@ -36,6 +36,7 @@ AAvatar::AAvatar()
 	Camera->SetupAttachment(SpringArm);
 	Exhaust->SetupAttachment(Collision);
 	EffectPlane->SetupAttachment(Collision);
+
 }
 
 // Called when the game starts or when spawned
@@ -50,6 +51,9 @@ void AAvatar::BeginPlay()
 
 	ExhaustMID = Exhaust->CreateDynamicMaterialInstance(0);
 	//EffectMID = EffectPlane->CreateDynamicMaterialInstance(0);
+
+	SetActorTickEnabled(false);
+	Exhaust->SetVisibility(false);
 
 	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
 		NULL, LOAD_None, NULL);
@@ -90,7 +94,7 @@ void AAvatar::Tick(float DeltaTime)
 	
 	Thruster->ThrustStrength = InputMultiplier * BaseThrustStrength;
 
-	if (InputMultiplier > 0.3)
+	if (InputMultiplier > 0.05)
 		SetActorRotation(FRotator(0.f, 0.f, UKismetMathLibrary::DegAtan2(SpheroidXValue, SpheroidYValue)));
 
 	
@@ -154,15 +158,14 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 
 			CalculateTime(GameModeRef->LevelIndex);
 
-			if (!GameModeRef->bIsTutorialLevel)
-			{
 				DisplayTime();
-			}
 		}
 
 	else if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
 	{
 		UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", DeathColor);
+
+		if (Keys >= LevelExit->KeysNeededToOpen) LevelExit->DeactivateExit();
 
 		DeathSequence();
 		bIsDeathSequenceRunning = true;

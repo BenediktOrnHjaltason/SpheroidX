@@ -40,12 +40,8 @@ void ABlackHole::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CurrentDistanceToSpheroid = GetDistanceTo(Spheroid);
-
-
 	if (CurrentDistanceToSpheroid < 450)
 	{
-		if (Spheroid->Collision->IsGravityEnabled()) Spheroid->Collision->SetEnableGravity(false);
-
 		DrawDebugLine(
 			CurrentWorld,
 			GetActorLocation(),
@@ -57,12 +53,9 @@ void ABlackHole::Tick(float DeltaTime)
 			3.f
 		);
 
-		AttractScale = (12000 / CurrentDistanceToSpheroid);
+		AttractScale = (7500 / CurrentDistanceToSpheroid);
 
 		Spheroid->Collision->AddForce((CurrentLocationThis - Spheroid->GetActorLocation()) *  AttractScale);
-		return;
 	}
-
-	if (!Spheroid->Collision->IsGravityEnabled()) Spheroid->Collision->SetEnableGravity(true);
 }
 
