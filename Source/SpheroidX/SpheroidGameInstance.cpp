@@ -2,6 +2,7 @@
 
 
 #include "SpheroidGameInstance.h"
+#include "UnrealString.h"
 
 
 /*
@@ -37,8 +38,6 @@ void USpheroidGameInstance::BreakTime(float& f_Seconds, int& Minutes, int& Secon
 	Seconds = f_Seconds - (Minutes * 60);
 	//float
 	Remainder = (f_Seconds - Seconds) * 100;
-
-	PrintLevel0Times();
 }
 
 
