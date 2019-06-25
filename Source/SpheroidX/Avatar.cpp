@@ -174,6 +174,8 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 
 void AAvatar::DeathSequence()
 {	
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
+
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
 	TL_DeathEffect();
 	Collision->SetLinearDamping(1000);

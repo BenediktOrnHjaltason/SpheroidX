@@ -13,7 +13,6 @@
 #include "Engine/StaticMeshActor.h"
 #include "TimerManager.h"
 #include "Materials/MaterialParameterCollection.h"
-#include "Components/WidgetComponent.h"
 #include "Avatar.generated.h"
 
 UCLASS()

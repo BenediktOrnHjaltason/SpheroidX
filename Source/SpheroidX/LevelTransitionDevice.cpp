@@ -53,6 +53,9 @@ void ALevelTransitionDevice::BeginPlay()
 
 	if (EntranceOrExit == ELTD_Type::Entrance)
 	{
+
+		CreateHUD();
+
 		if (Spheroid) PrepareSpheroidForLaunch();
 		GetWorldTimerManager().SetTimer(ShootOutSequenceTimer, this, &ALevelTransitionDevice::ShootOutSequence, 2.f, false);
 
@@ -61,8 +64,6 @@ void ALevelTransitionDevice::BeginPlay()
 	}
 
 	else if (EntranceOrExit == ELTD_Type::Exit && KeysNeededToOpen <= 0) TL_OperateDoors(EOpenOrClose::Open);
-
-	else CreateHUD();
 	
 }
 
@@ -126,8 +127,6 @@ void ALevelTransitionDevice::ShootOutSequence()
 		TL_OperateDoors(EOpenOrClose::Open, true);
 		GetWorldTimerManager().SetTimer(StartImpulseTimer, this, &ALevelTransitionDevice::ShootOutSpheroid, 1.f, false);
 	}
-
-
 }
 
 void ALevelTransitionDevice::ShootOutSpheroid()
@@ -135,16 +134,17 @@ void ALevelTransitionDevice::ShootOutSpheroid()
 	Spheroid->Collision->SetLinearDamping(0);
 	Spheroid->Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
+	
 	Spheroid->Collision->AddImpulse(GetActorUpVector() * 15000);
 
-	GetWorldTimerManager().SetTimer(EnableSpheroidInputTimer, this, &ALevelTransitionDevice::ReactivateSpheroidInput, 0.3f, false);
+	ReactivateSpheroidInput();
 }
 
 void ALevelTransitionDevice::ReactivateSpheroidInput()
 {
 	Spheroid->EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	Spheroid->bIsDeathSequenceRunning = false;
-
+	
 	Spheroid->SetActorTickEnabled(true);
 	Spheroid->Exhaust->SetVisibility(true);
 

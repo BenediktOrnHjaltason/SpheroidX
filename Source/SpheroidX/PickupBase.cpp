@@ -53,7 +53,7 @@ void APickupBase::PickedUp(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 		
 		++Spheroid->LevelExit->SpheroidKeyCount;
 		PlayPickupSound();
-		Spheroid->GameModeRef->PlayHUDAnimation(EHUDAnimations::FadeInOutRemaining);
+		//Spheroid->GameModeRef->PlayHUDAnimation(EHUDAnimations::FadeInOutRemaining);
 	}
 }
 
