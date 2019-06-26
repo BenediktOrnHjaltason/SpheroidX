@@ -147,6 +147,7 @@ void ALevelTransitionDevice::ReactivateSpheroidInput()
 	
 	Spheroid->SetActorTickEnabled(true);
 	Spheroid->Exhaust->SetVisibility(true);
+	Spheroid->bIsEffectAllowed = true;
 
 	if (!GameModeRef->bIsTutorialLevel)
 	Spheroid->TimeAtShootOut = CurrentWorld->GetRealTimeSeconds();

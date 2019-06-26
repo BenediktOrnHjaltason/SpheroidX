@@ -17,7 +17,7 @@ APickupBase::APickupBase()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	EffectPlane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Effect Plane"));
 
-	Collision->SetSphereRadius(27);
+	Collision->SetSphereRadius(30);
 	RootComponent = Collision;
 
 	Mesh->SetupAttachment(Collision);

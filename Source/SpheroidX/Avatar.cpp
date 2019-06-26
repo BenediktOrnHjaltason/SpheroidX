@@ -134,18 +134,6 @@ void AAvatar::IncrementKeys()
 	}
 }
 
-void AAvatar::StopMomentum()
-{
-	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
-	bIsEffectAllowed = false;
-
-	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
-	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
-	TL_StopMomentumEffect();
-
-	Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
-}
-
 void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
@@ -197,6 +185,7 @@ void AAvatar::DeathSequence()
 	}
 
 	bIsFirstTimeOnLevel = false;
+	bIsEffectAllowed = false;
 
 	Keys = 0;
 
@@ -232,14 +221,13 @@ void AAvatar::EffectCleanUp()
 
 void AAvatar::BoostProxy()
 {
-	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
-	bIsEffectAllowed = false;
-
-
 	if (Collision->GetPhysicsLinearVelocity().Z < 0)
 		Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
 	Collision->AddImpulse(GetActorUpVector() * 10000);
+
+	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
+	bIsEffectAllowed = false;
 
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
@@ -252,6 +240,21 @@ void AAvatar::BoostEffect(float TimelineScale, float TimelineOpacity)
 	EffectPlane->SetRelativeScale3D(UKismetMathLibrary::VLerp(Small, BoostBig, TimelineScale));
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", TimelineOpacity);
 
+}
+
+void AAvatar::StopMomentum()
+{
+	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
+	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
+
+	//Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
+
+	Collision->SetPhysicsLinearVelocity(FVector(0, 0, 0));
+
+	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
+	bIsEffectAllowed = false;
+
+	TL_StopMomentumEffect();
 }
 
 void AAvatar::StopMomentumEffect(float TimelineScale)
