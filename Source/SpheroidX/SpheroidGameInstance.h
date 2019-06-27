@@ -23,7 +23,7 @@ public:
 	FString SlotName = TEXT("SpheroidOne");
 	uint32 UserIndex = 0;
 
-	int NumberOfLevels = 12;
+	int NumberOfLevels = 18;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Levels)
 		int LevelIndex = 0;
@@ -58,7 +58,7 @@ public:
 
 
 
-	void BreakTime(float& f_Seconds, int&LevelIndex);
+	void BreakTime(const float& f_Seconds, const int&LevelIndex);
 
 	float GetLevelTime() { return LevelTimes[LevelIndex]; }
 	void SetLevelTime(float NewTime) { LevelTimes[LevelIndex] = NewTime; }

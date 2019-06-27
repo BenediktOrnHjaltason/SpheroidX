@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/SceneComponent.h"
 #include "BlackHole.generated.h"
 
 UCLASS()

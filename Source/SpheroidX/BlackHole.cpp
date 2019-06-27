@@ -4,6 +4,7 @@
 #include "BlackHole.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/Public/DrawDebugHelpers.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Avatar.h"
 
 // Sets default values
@@ -15,14 +16,12 @@ ABlackHole::ABlackHole()
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
 	Plane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Image Plane"));
 	Torus = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torus"));
-	
 
 	Collider->SetSphereRadius(50);
 	RootComponent = Collider;
 
 	Plane->SetupAttachment(Collider);
 	Torus->SetupAttachment(Collider);
-
 }
 
 // Called when the game starts or when spawned
@@ -42,6 +41,7 @@ void ABlackHole::Tick(float DeltaTime)
 	CurrentDistanceToSpheroid = GetDistanceTo(Spheroid);
 	if (CurrentDistanceToSpheroid < 450)
 	{
+		/*
 		DrawDebugLine(
 			CurrentWorld,
 			GetActorLocation(),
@@ -52,6 +52,7 @@ void ABlackHole::Tick(float DeltaTime)
 			1,
 			3.f
 		);
+		*/
 
 		AttractScale = (7500 / CurrentDistanceToSpheroid);
 

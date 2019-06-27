@@ -235,8 +235,8 @@ void AAvatar::EffectCleanUp()
 
 void AAvatar::BoostProxy()
 {
-	if (Collision->GetPhysicsLinearVelocity().Z < 0)
-		Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
+
+	Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
 	Collision->AddImpulse(GetActorUpVector() * 10000);
 

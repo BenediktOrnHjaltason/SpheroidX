@@ -20,7 +20,7 @@ USpheroidGameInstance::USpheroidGameInstance()
 	LevelsLocked.Init(true, NumberOfLevels);
 }
 
-void USpheroidGameInstance::BreakTime(float& f_Seconds, int& p_LevelIndex)
+void USpheroidGameInstance::BreakTime(const float& f_Seconds, const int& p_LevelIndex)
 {
 	//Minutes
 
@@ -31,7 +31,7 @@ void USpheroidGameInstance::BreakTime(float& f_Seconds, int& p_LevelIndex)
 
 	//Seconds
 
-	i_Seconds = f_Seconds - i_Minutes;
+	i_Seconds = f_Seconds - (i_Minutes*60);
 
 	S_Seconds = FString::FromInt(i_Seconds);
 
