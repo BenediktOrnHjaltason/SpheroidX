@@ -25,21 +25,17 @@ public:
 
 	int NumberOfLevels = 12;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Levels)
+		int LevelIndex = 0;
+
 	bool bIsFreshSessionStart = true;
 
 	UFUNCTION(BlueprintCallable)
-		void SaveLevelTimeToDisk();
+		void SaveLevelTimesToDisk();
 
 	UFUNCTION(BlueprintCallable)
 	void LoadLevelTimesFromDisk();
 
-	UFUNCTION(BlueprintCallable)
-	void PrintLevel0Times()
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Minutes: %i"), LevelTimesMinutes[0])
-		UE_LOG(LogTemp, Warning, TEXT("Seconds: %i"), LevelTimesSeconds[0])
-		UE_LOG(LogTemp, Warning, TEXT("Remainder: %i"), LevelTimesRemaining[0])
-	}
 
 	//-----------Level times----------//
 
@@ -50,27 +46,21 @@ public:
 		TArray<bool> LevelsLocked;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<int> LevelTimesMinutes;
+		TArray<FString> LevelTimesString;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<int> LevelTimesSeconds;
+	//--Temp variable--//
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<int> LevelTimesRemaining;
-
-	UFUNCTION(BlueprintCallable)
-		int GetLevelTimeMinutes(int LevelIndex) { return LevelTimesMinutes[LevelIndex]; }
-
-	UFUNCTION(BlueprintCallable)
-		int GetLevelTimeSeconds(int LevelIndex) { return LevelTimesSeconds[LevelIndex]; }
-
-	UFUNCTION(BlueprintCallable)
-		int GetLevelTimeRemaining(int LevelIndex) { return LevelTimesRemaining[LevelIndex]; }
+	int i_Minutes = 0;
+	FString S_Minutes = "";
+	int i_Seconds = 0;
+	FString S_Seconds = "";
+	FString S_Milliseconds = "";
 
 
-	void BreakTime(float& f_Seconds, int& Minutes, int& Seconds, int& Remainder);
 
-	float GetLevelTime(int LevelIndex);
-	void SetLevelTime(int LevelIndex, float NewTime);
+	void BreakTime(float& f_Seconds, int&LevelIndex);
+
+	float GetLevelTime() { return LevelTimes[LevelIndex]; }
+	void SetLevelTime(float NewTime) { LevelTimes[LevelIndex] = NewTime; }
 
 };
