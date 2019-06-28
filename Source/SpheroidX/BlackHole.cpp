@@ -16,12 +16,14 @@ ABlackHole::ABlackHole()
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
 	Plane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Image Plane"));
 	Torus = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torus"));
+	MeasureActor = CreateDefaultSubobject<UChildActorComponent>(TEXT("MeasureActor"));
 
 	Collider->SetSphereRadius(50);
 	RootComponent = Collider;
 
 	Plane->SetupAttachment(Collider);
 	Torus->SetupAttachment(Collider);
+	MeasureActor->SetupAttachment(Collider);
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +33,8 @@ void ABlackHole::BeginPlay()
 	Spheroid = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 	CurrentWorld = GetWorld();
 	CurrentLocationThis = GetActorLocation();
+
+
 }
 
 // Called every frame
@@ -39,7 +43,7 @@ void ABlackHole::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CurrentDistanceToSpheroid = GetDistanceTo(Spheroid);
-	if (CurrentDistanceToSpheroid < 450)
+	if (CurrentDistanceToSpheroid < radius)
 	{
 		/*
 		DrawDebugLine(

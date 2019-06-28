@@ -7,6 +7,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/SceneComponent.h"
+#include "Components/ChildActorComponent.h"
 #include "BlackHole.generated.h"
 
 UCLASS()
@@ -27,12 +28,18 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		USphereComponent* Collider;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		UChildActorComponent* MeasureActor;
+
 	class AAvatar* Spheroid;
 	UWorld* CurrentWorld;
 
 	float CurrentDistanceToSpheroid;
 	float AttractScale;
 	float ForceBase = 2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float radius = 0;
 
 	bool SpheroidIsgrabbed;
 
