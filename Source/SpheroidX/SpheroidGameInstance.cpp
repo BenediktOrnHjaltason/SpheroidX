@@ -119,6 +119,7 @@ void USpheroidGameInstance::SaveLevelTimesToDisk()
 
 void USpheroidGameInstance::LoadLevelTimesFromDisk()
 {
+
 	if (bIsFreshSessionStart && UGameplayStatics::DoesSaveGameExist(SlotName, UserIndex))
 	{
 		bIsFreshSessionStart = false;
