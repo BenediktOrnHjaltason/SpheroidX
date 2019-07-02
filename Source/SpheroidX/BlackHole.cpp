@@ -45,19 +45,6 @@ void ABlackHole::Tick(float DeltaTime)
 	CurrentDistanceToSpheroid = GetDistanceTo(Spheroid);
 	if (CurrentDistanceToSpheroid < radius)
 	{
-		/*
-		DrawDebugLine(
-			CurrentWorld,
-			GetActorLocation(),
-			Spheroid->GetActorLocation(),
-			FColor(1, 0, 0),
-			true,
-			0.1f,
-			1,
-			3.f
-		);
-		*/
-
 		AttractScale = (7500 / CurrentDistanceToSpheroid);
 
 		Spheroid->Collision->AddForce((CurrentLocationThis - Spheroid->GetActorLocation()) *  AttractScale);

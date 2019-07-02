@@ -55,10 +55,26 @@ public:
 	int i_Seconds = 0;
 	FString S_Seconds = "";
 	FString S_Milliseconds = "";
+	//------------------//
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		float fCurrentLevelTime{ 0.f };
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		float OldTimeForComparison{ 0.f };
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FString sCurrentLevelTime{"00 : 00 : 00"};
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FString sPreviousBestTime{"00 : 00 : 00"};
+
+	void ManageNewHighScore(float NewTime);
 
 
+	void BreakTimeLevelEnd(const float& f_Seconds, const int&p_LevelIndex);
 
-	void BreakTime(const float& f_Seconds, const int&LevelIndex);
+	void BreakTimeLoad(const float& f_Seconds, const int&LevelIndex);
 
 	float GetLevelTime() { return LevelTimes[LevelIndex]; }
 	void SetLevelTime(float NewTime) { LevelTimes[LevelIndex] = NewTime; }

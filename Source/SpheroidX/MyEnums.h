@@ -54,3 +54,4 @@ enum class ECameraShakes : uint8
 {
 	Death				UMETA(DisplayName = "Death"),
 };
+
