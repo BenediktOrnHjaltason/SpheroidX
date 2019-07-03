@@ -88,6 +88,28 @@ public:
 
 		bool bIsFirstTimeOnLevel = true;
 
+		//------------Camera Movement-//
+
+		float ZVelocity = 0.f;
+
+		FVector CameraUpperPosition{ 0.f, 0.f, 130.f };
+		FVector CameraLowerPosition{ 0.f, 0.f, -130.f };
+		FVector LocationAtDirectionChange{ 0.f, 0.f, 0.f };
+
+		bool bIsMovingUp = false;
+		bool bIsMovingDown = false;
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bShouldCameraStartMoving = true;
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+			bool bChangedDirection = false;
+
+		UFUNCTION(BlueprintImplementableEvent)
+			void LerpCamera(FVector LocationAtDirectionChange, FVector TowardsPosition);
+
+
+
 		//------------STATS-----------//
 		UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Keys = 0;

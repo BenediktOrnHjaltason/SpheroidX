@@ -100,6 +100,48 @@ void AAvatar::Tick(float DeltaTime)
 	
 	ExhaustMID->SetScalarParameterValue("Opacity", InputMultiplier);
 	Exhaust->SetRelativeScale3D(FVector(0.5f, UKismetMathLibrary::Lerp(0.5f, 1.0f, InputMultiplier), 1));
+
+	
+
+	//Camera Movement
+	ZVelocity = Collision->GetPhysicsLinearVelocity().Z;
+
+	UE_LOG(LogTemp, Warning, TEXT("Z Velocity: %f"), ZVelocity)
+	
+	if (ZVelocity > 50.f)
+	{
+		bIsMovingUp = true;
+		bIsMovingDown = false;
+		bShouldCameraStartMoving = true;
+	}
+	else if (ZVelocity < -50.f)
+	{
+		bIsMovingDown = true;
+		bIsMovingUp = false;
+		bShouldCameraStartMoving = true;
+	}
+	else if (ZVelocity < 50.f && ZVelocity > -50.f)
+	{
+		bShouldCameraStartMoving = false;
+		bChangedDirection = true;
+		bIsMovingDown = false;
+		bIsMovingUp = false;
+	}
+
+	if (bIsMovingUp && bShouldCameraStartMoving)
+	{
+		bShouldCameraStartMoving = false;
+		LocationAtDirectionChange = Camera->GetRelativeTransform().GetLocation();
+		LerpCamera(LocationAtDirectionChange, CameraUpperPosition);
+	}
+
+	else if (bIsMovingDown && bShouldCameraStartMoving)
+	{
+		bShouldCameraStartMoving = false;
+		LocationAtDirectionChange = Camera->GetRelativeTransform().GetLocation();
+		LerpCamera(LocationAtDirectionChange, CameraLowerPosition);
+	}
+
 }
 
 // Called to bind functionality to input
