@@ -154,6 +154,7 @@ void AAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("StopMomentum", IE_Pressed, this, &AAvatar::StopMomentum);
 	PlayerInputComponent->BindAction("Boost", IE_Pressed, this, &AAvatar::BoostProxy);
 	PlayerInputComponent->BindAction("Portal", IE_Pressed, this, &AAvatar::UsePortal);
+	PlayerInputComponent->BindAction("MoveCamera", IE_Pressed, this, &AAvatar::MoveCamera);
 }
 
 void AAvatar::SpheroidXAxis(float AxisValue)
@@ -358,4 +359,13 @@ void AAvatar::PortalMorphCleanUp()
 void AAvatar::PortalDissapear()
 {
 	LevelPortal->SetActorHiddenInGame(true);
+}
+
+void AAvatar::MoveCamera()
+{
+	bCameraSwitchBool = !bCameraSwitchBool;
+
+	if (bCameraSwitchBool) Camera->SetRelativeLocation(CameraLowerPosition);
+
+	else Camera->SetRelativeLocation(CameraUpperPosition);
 }

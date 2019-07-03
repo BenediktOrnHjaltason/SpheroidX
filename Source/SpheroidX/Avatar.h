@@ -260,7 +260,13 @@ public:
 		void PortalDissapear();
 		//------------/Portal-----------//
 
+		//--------Move Camera-----------//
 
+		UFUNCTION()
+			void MoveCamera();
+
+		bool bCameraSwitchBool = false;
+		//-------/Move Camera-----------//
 
 protected:
 	// Called when the game starts or when spawned
