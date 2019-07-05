@@ -93,7 +93,7 @@ public:
 		float ZVelocity = 0.f;
 
 		FVector CameraUpperPosition{ 0.f, 0.f, 130.f };
-		FVector CameraLowerPosition{ 0.f, 0.f, -130.f };
+		FVector CameraLowerPosition{ 0.f, 0.f, -100.f };
 		FVector LocationAtDirectionChange{ 0.f, 0.f, 0.f };
 
 		bool bIsMovingUp = false;
@@ -262,7 +262,7 @@ public:
 
 		//--------Move Camera-----------//
 
-		UFUNCTION()
+		UFUNCTION(BlueprintCallable)
 			void MoveCamera();
 
 		bool bCameraSwitchBool = false;

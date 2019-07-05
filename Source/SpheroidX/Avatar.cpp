@@ -101,7 +101,7 @@ void AAvatar::Tick(float DeltaTime)
 	ExhaustMID->SetScalarParameterValue("Opacity", InputMultiplier);
 	Exhaust->SetRelativeScale3D(FVector(0.5f, UKismetMathLibrary::Lerp(0.5f, 1.0f, InputMultiplier), 1));
 
-	
+	/*
 
 	//Camera Movement
 	ZVelocity = Collision->GetPhysicsLinearVelocity().Z;
@@ -141,7 +141,7 @@ void AAvatar::Tick(float DeltaTime)
 		LocationAtDirectionChange = Camera->GetRelativeTransform().GetLocation();
 		LerpCamera(LocationAtDirectionChange, CameraLowerPosition);
 	}
-
+	*/
 }
 
 // Called to bind functionality to input
