@@ -302,9 +302,6 @@ void AAvatar::BoostEffect(float TimelineScale, float TimelineOpacity)
 
 void AAvatar::StopMomentum()
 {
-	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
-	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
-
 	//Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
 
 	Collision->SetPhysicsLinearVelocity(FVector(0, 0, 0));
@@ -312,6 +309,8 @@ void AAvatar::StopMomentum()
 	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
 	bIsEffectAllowed = false;
 
+	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
+	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
 	TL_StopMomentumEffect();
 }
 
