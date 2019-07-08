@@ -171,6 +171,7 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 
 		Spheroid->Collision->SetLinearDamping(1000.f);
 		Spheroid->Collision->SetAngularDamping(1000.f);
+		Spheroid->AudioComp->SetVolumeMultiplier(0.f);
 
 		TL_OperateDoors(EOpenOrClose::Close);
 

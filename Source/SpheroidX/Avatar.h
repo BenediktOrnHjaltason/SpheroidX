@@ -13,6 +13,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "TimerManager.h"
 #include "Materials/MaterialParameterCollection.h"
+#include "Components/AudioComponent.h"
 #include "Avatar.generated.h"
 
 UCLASS()
@@ -62,6 +63,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector EntranceAttachLoc{ 0,0,0 };
 
+	UPROPERTY(EditAnywhere)
+		UAudioComponent* AudioComp;
+
+	UPROPERTY(EditAnywhere, Category = Sound)
+		USoundBase* BoostSound;
+
+	UPROPERTY(EditAnywhere, Category = Sound)
+		USoundBase* StopMomentumSound;
 
 	FVector ExitAttachLoc{ 0,0,0 };
 

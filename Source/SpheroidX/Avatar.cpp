@@ -26,6 +26,8 @@ AAvatar::AAvatar()
 	Exhaust = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Exhaust"));
 	EffectPlane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EffectPlane"));
 
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+
 	RootComponent = Collision;
 
 	Collision->SetSphereRadius(32);
@@ -36,7 +38,7 @@ AAvatar::AAvatar()
 	Camera->SetupAttachment(SpringArm);
 	Exhaust->SetupAttachment(Collision);
 	EffectPlane->SetupAttachment(Collision);
-
+	AudioComp->SetupAttachment(Collision);
 }
 
 // Called when the game starts or when spawned
@@ -79,6 +81,8 @@ void AAvatar::BeginPlay()
 	}
 
 	LevelPortal = CurrentWorld->SpawnActor<APortal>(PortalToSpawn, GetActorLocation(), FRotator(0));
+
+	AudioComp->Play();
 }
 
 // Called every frame
@@ -100,6 +104,9 @@ void AAvatar::Tick(float DeltaTime)
 	
 	ExhaustMID->SetScalarParameterValue("Opacity", InputMultiplier);
 	Exhaust->SetRelativeScale3D(FVector(0.5f, UKismetMathLibrary::Lerp(0.5f, 1.0f, InputMultiplier), 1));
+
+	AudioComp->SetVolumeMultiplier(InputMultiplier);
+
 
 	/*
 
@@ -220,6 +227,8 @@ void AAvatar::CalculateTime(int LevelIndex)
 
 void AAvatar::DeathSequence()
 {	
+	SetActorTickEnabled(false);
+	AudioComp->SetVolumeMultiplier(0.f);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
@@ -279,7 +288,7 @@ void AAvatar::EffectCleanUp()
 
 void AAvatar::BoostProxy()
 {
-
+	
 	Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
 	Collision->AddImpulse(GetActorUpVector() * 10000);
@@ -289,6 +298,7 @@ void AAvatar::BoostProxy()
 
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
+	UGameplayStatics::PlaySound2D(CurrentWorld, BoostSound, 1.f, 1.f, 0.15f);
 	TL_BoostEffect();
 }
 
@@ -302,8 +312,6 @@ void AAvatar::BoostEffect(float TimelineScale, float TimelineOpacity)
 
 void AAvatar::StopMomentum()
 {
-	//Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
-
 	Collision->SetPhysicsLinearVelocity(FVector(0, 0, 0));
 
 	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
@@ -311,6 +319,7 @@ void AAvatar::StopMomentum()
 
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
+	UGameplayStatics::PlaySound2D(CurrentWorld, StopMomentumSound);
 	TL_StopMomentumEffect();
 }
 
