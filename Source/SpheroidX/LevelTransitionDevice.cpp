@@ -135,7 +135,7 @@ void ALevelTransitionDevice::ShootOutSpheroid()
 	Spheroid->Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
 	
-	Spheroid->Collision->AddImpulse(GetActorUpVector() * 15000);
+	Spheroid->Collision->AddImpulse(GetActorUpVector() * 14000);
 
 	ReactivateSpheroidInput();
 }

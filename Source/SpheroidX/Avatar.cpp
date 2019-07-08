@@ -180,7 +180,7 @@ void AAvatar::IncrementKeys()
 
 	if (Keys >= LevelExit->KeysNeededToOpen && LevelExit->KeysNeededToOpen != 0)
 	{
-		LevelExit->TL_OperateDoors(EOpenOrClose::Open);
+		LevelExit->TL_OperateDoors(EOpenOrClose::Open, false, true);
 	}
 }
 

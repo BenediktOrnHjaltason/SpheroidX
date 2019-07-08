@@ -83,7 +83,7 @@ public:
 	//START Doors
 
 	UFUNCTION(BlueprintImplementableEvent)
-		void TL_OperateDoors(EOpenOrClose OpenOrClose, bool ForRespawn = false);
+		void TL_OperateDoors(EOpenOrClose OpenOrClose, bool ForRespawn = false, bool bForExitUnlock = false);
 
 	UFUNCTION(BlueprintCallable)
 		void OperateDoors(EOpenOrClose OpenOrClose, float Timeline);
