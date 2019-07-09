@@ -347,7 +347,7 @@ void AAvatar::UsePortal()
 	else
 	{
 		LevelPortal->SetActorLocation(GetActorLocation() + SpawnOffsett);
-		LevelPortal->SetActorHiddenInGame(false);
+		LevelPortal->Morph(EOpenOrClose::Open);
 	}
 }
 
@@ -366,7 +366,7 @@ void AAvatar::PortalMorphCleanUp()
 
 void AAvatar::PortalDissapear()
 {
-	LevelPortal->SetActorHiddenInGame(true);
+	LevelPortal->Morph(EOpenOrClose::Close);
 }
 
 void AAvatar::MoveCamera()

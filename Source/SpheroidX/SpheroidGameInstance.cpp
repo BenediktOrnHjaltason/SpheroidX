@@ -146,3 +146,14 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 		UE_LOG(LogTemp, Warning, TEXT("LevelTime level %i is %f"), i+1, LevelTimes[i])
 
 }
+
+//Testing purposes
+void USpheroidGameInstance::ResetAllLevelTimes()
+{
+	USpheroidSaveGame* ResetObject = Cast<USpheroidSaveGame>(UGameplayStatics::CreateSaveGameObject(USpheroidSaveGame::StaticClass()));
+
+	for (int i = 0; i < NumberOfLevels; ++i)
+		*ResetObject->LevelTimes[i] = 0.f;
+
+	UGameplayStatics::SaveGameToSlot(ResetObject, SlotName, UserIndex);
+}
