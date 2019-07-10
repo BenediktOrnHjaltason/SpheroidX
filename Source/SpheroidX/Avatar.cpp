@@ -332,12 +332,19 @@ void AAvatar::StopMomentumEffect(float TimelineScale)
 void AAvatar::UsePortal()
 {
 	if (bIsDeathSequenceRunning) return;
-	//False for make, true for travel to
+
+	//True for travel through, false for make
 	bMakeOrTravel = !bMakeOrTravel;
 
 	if (bMakeOrTravel)
 	{
-		Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
+		if (bIsTravelingThroughPortal)
+		{
+			bMakeOrTravel = !bMakeOrTravel;
+			return;
+		}
+		//Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
+		bIsTravelingThroughPortal = true;
 		Exhaust->SetVisibility(false);
 		EffectPlane->SetVisibility(false);
 		PortalMorph();
@@ -346,8 +353,16 @@ void AAvatar::UsePortal()
 
 	else
 	{
+		if (bIsTravelingThroughPortal || LevelPortal->bIsPortalActive)
+		{
+			bMakeOrTravel = !bMakeOrTravel;
+			return;
+		}
+
+		LevelPortal->bIsPortalActive = true;
 		LevelPortal->SetActorLocation(GetActorLocation() + SpawnOffsett);
-		LevelPortal->SetActorHiddenInGame(false);
+
+		LevelPortal->Morph(EOpenOrClose::Open);
 	}
 }
 
@@ -361,12 +376,13 @@ void AAvatar::PortalMorphCleanUp()
 {
 	Exhaust->SetVisibility(true);
 	EffectPlane->SetVisibility(true);
-	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
+	bIsTravelingThroughPortal = false;
+	//Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
 }
 
 void AAvatar::PortalDissapear()
 {
-	LevelPortal->SetActorHiddenInGame(true);
+	LevelPortal->Morph(EOpenOrClose::Close);
 }
 
 void AAvatar::MoveCamera()

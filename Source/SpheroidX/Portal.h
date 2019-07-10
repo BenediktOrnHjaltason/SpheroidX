@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
+#include "MyEnums.h"
 #include "Portal.generated.h"
 
 UCLASS()
@@ -21,7 +22,7 @@ public:
 	USceneComponent* SceneRoot;
 
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* PortalPlane1;
 
 	UPROPERTY(EditAnywhere)
@@ -30,6 +31,9 @@ public:
 	FRotator BaseRotateDelta{ 0.f, 0.f, 1.f };
 	FRotator CenterRotateDelta{0.f, 0.f, -2.f };
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsPortalActive = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -37,5 +41,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void Morph(EOpenOrClose OpenOrClose);
 
 };

@@ -267,6 +267,12 @@ public:
 
 		FTimerHandle PortalDisappearTimer;
 		void PortalDissapear();
+
+		//Used together with LevelPortal->bIsAcive
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bIsTravelingThroughPortal = false;
+
+
 		//------------/Portal-----------//
 
 		//--------Move Camera-----------//
