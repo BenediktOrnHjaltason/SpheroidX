@@ -16,7 +16,8 @@ UENUM(BlueprintType)
 enum class ELTD_Type : uint8
 {
 	Entrance			UMETA(DisplayName = "Entrance"),
-	Exit				UMETA(DisplayName = "Exit")
+	Exit				UMETA(DisplayName = "Exit"),
+	TutorialExit		UMETA(DisplayName = "Tutorial Exit")
 };
 
 UENUM(BlueprintType)

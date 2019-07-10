@@ -66,6 +66,13 @@ void ALevelTransitionDevice::BeginPlay()
 	}
 
 	else if (EntranceOrExit == ELTD_Type::Exit && KeysNeededToOpen <= 0) TL_OperateDoors(EOpenOrClose::Open);
+
+	else if (EntranceOrExit == ELTD_Type::TutorialExit)
+	{
+
+		UE_LOG(LogTemp, Warning, TEXT("LTD::BeginPlay(): TutorialExit detected"))
+		TL_OperateDoors(EOpenOrClose::Open, false, true);
+	}
 	
 }
 
@@ -158,7 +165,7 @@ void ALevelTransitionDevice::ReactivateSpheroidInput()
 void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp, AActor * OtherActor,
 	UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (EntranceOrExit == ELTD_Type::Exit)
+	if (EntranceOrExit == ELTD_Type::Exit || EntranceOrExit == ELTD_Type::TutorialExit)
 	{
 
 		UGameplayStatics::PlaySound2D(GetWorld(), Sound_ReachedGoal);
@@ -178,6 +185,11 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 		TL_OperateDoors(EOpenOrClose::Close);
 
 		GameModeRef->PlayHUDAnimation(EHUDAnimations::ReachedGoal);
+
+		if (EntranceOrExit == ELTD_Type::TutorialExit)
+		{
+			CreateTutorialEndWidget();
+		}
 	}
 }
 

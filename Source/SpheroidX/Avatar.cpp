@@ -68,7 +68,7 @@ void AAvatar::BeginPlay()
 	for (TActorIterator<ALevelTransitionDevice> DeviceItr(GetWorld()); DeviceItr; ++DeviceItr)
 	{
 		ALevelTransitionDevice *Device = *DeviceItr;
-		if (Device->EntranceOrExit == ELTD_Type::Exit)
+		if (Device->EntranceOrExit == ELTD_Type::Exit || Device->EntranceOrExit == ELTD_Type::TutorialExit)
 		{
 			LevelExit = Device;
 			ExitAttachLoc = LevelExit->PawnAttachLocation->GetComponentLocation();
@@ -178,7 +178,7 @@ void AAvatar::IncrementKeys()
 {
 	++Keys;
 
-	if (Keys >= LevelExit->KeysNeededToOpen && LevelExit->KeysNeededToOpen != 0)
+	if (LevelExit->EntranceOrExit != ELTD_Type::TutorialExit && Keys >= LevelExit->KeysNeededToOpen && LevelExit->KeysNeededToOpen != 0)
 	{
 		LevelExit->TL_OperateDoors(EOpenOrClose::Open, false, true);
 	}
@@ -206,7 +206,7 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 	{
 		UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", DeathColor);
 
-		if (Keys >= LevelExit->KeysNeededToOpen) LevelExit->DeactivateExit();
+		if (LevelExit->EntranceOrExit != ELTD_Type::TutorialExit && Keys >= LevelExit->KeysNeededToOpen) LevelExit->DeactivateExit();
 
 		DeathSequence();
 		bIsDeathSequenceRunning = true;
