@@ -116,7 +116,7 @@ public:
 
 	//HUD is created here and simultaneaously gives gamemode a reference to it
 	UFUNCTION(BlueprintImplementableEvent)
-		void CreateHUD();
+		void CreateHUD(bool bIsTutorialLevel = true);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
 		int KeysNeededToOpen;

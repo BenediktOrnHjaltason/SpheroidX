@@ -53,8 +53,10 @@ void ALevelTransitionDevice::BeginPlay()
 
 	if (EntranceOrExit == ELTD_Type::Entrance)
 	{
+		FString MapName = GetWorld()->GetMapName();
 
-		CreateHUD();
+		if (MapName.Contains("B")) CreateHUD(false);
+		else CreateHUD();
 
 		if (Spheroid) PrepareSpheroidForLaunch();
 		GetWorldTimerManager().SetTimer(ShootOutSequenceTimer, this, &ALevelTransitionDevice::ShootOutSequence, 2.f, false);
