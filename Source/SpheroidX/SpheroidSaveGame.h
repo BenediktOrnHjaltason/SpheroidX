@@ -28,7 +28,7 @@ public:
 
 		//-------------SavedData-------------//
 
-		int NumberOfLevels = 18;
+		int NumberOfLevels = 24;
 
 		TArray<float*> LevelTimes;
 		TArray<bool*> LevelsLocked;
@@ -69,6 +69,18 @@ public:
 			float time_L17 = 0.f;
 		UPROPERTY(VisibleAnywhere)
 			float time_L18 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L19 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L20 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L21 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L22 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L23 = 0.f;
+		UPROPERTY(VisibleAnywhere)
+			float time_L24 = 0.f;
 
 
 		UPROPERTY(VisibleAnywhere)
@@ -107,6 +119,18 @@ public:
 			bool Locked_L17 = true;
 		UPROPERTY(VisibleAnywhere)
 			bool Locked_L18 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L19 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L20 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L21 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L22 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L23 = true;
+		UPROPERTY(VisibleAnywhere)
+			bool Locked_L24 = true;
 
 		//-----------/SavedData--------------//
 };

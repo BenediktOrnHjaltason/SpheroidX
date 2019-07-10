@@ -30,6 +30,12 @@ USpheroidSaveGame::USpheroidSaveGame()
 	LevelTimes[15] = &time_L16;
 	LevelTimes[16] = &time_L17;
 	LevelTimes[17] = &time_L18;
+	LevelTimes[18] = &time_L19;
+	LevelTimes[19] = &time_L20;
+	LevelTimes[20] = &time_L21;
+	LevelTimes[21] = &time_L22;
+	LevelTimes[22] = &time_L23;
+	LevelTimes[23] = &time_L24;
 
 	LevelsLocked[0] = &Locked_L1;
 	LevelsLocked[1] = &Locked_L2;
@@ -49,4 +55,10 @@ USpheroidSaveGame::USpheroidSaveGame()
 	LevelsLocked[15] = &Locked_L16;
 	LevelsLocked[16] = &Locked_L17;
 	LevelsLocked[17] = &Locked_L18;
+	LevelsLocked[18] = &Locked_L19;
+	LevelsLocked[19] = &Locked_L20;
+	LevelsLocked[20] = &Locked_L21;
+	LevelsLocked[21] = &Locked_L22;
+	LevelsLocked[22] = &Locked_L23;
+	LevelsLocked[23] = &Locked_L24;
 }

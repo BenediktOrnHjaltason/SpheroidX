@@ -253,6 +253,7 @@ public:
 
 		FVector SpawnOffsett{ 5.f, 0.f, 0.f };
 
+		UFUNCTION(BlueprintCallable)
 		void UsePortal();
 
 		void TravelPortalTimerProxy();
