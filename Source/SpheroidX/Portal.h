@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
-#include "MyEnums.h"
 #include "Portal.generated.h"
 
 UCLASS()
@@ -22,17 +21,14 @@ public:
 	USceneComponent* SceneRoot;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* PortalPlane1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* PortalPlane2;
 
 	FRotator BaseRotateDelta{ 0.f, 0.f, 1.f };
 	FRotator CenterRotateDelta{0.f, 0.f, -2.f };
-
-	UFUNCTION(BlueprintImplementableEvent)
-		void Morph(EOpenOrClose OpenOrClose);
 
 protected:
 	// Called when the game starts or when spawned
