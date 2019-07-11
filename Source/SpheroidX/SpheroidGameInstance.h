@@ -23,7 +23,7 @@ public:
 	FString SlotName = TEXT("SpheroidOne");
 	uint32 UserIndex = 0;
 
-	int NumberOfLevels = 18;
+	int NumberOfLevels = 48;
 
 	//99 for opening main menu
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Levels)
