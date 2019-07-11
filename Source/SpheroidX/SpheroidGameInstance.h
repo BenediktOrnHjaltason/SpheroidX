@@ -25,8 +25,9 @@ public:
 
 	int NumberOfLevels = 18;
 
+	//99 for opening main menu
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Levels)
-		int LevelIndex = 0;
+		int LevelIndex = 99;
 
 	bool bIsFreshSessionStart = true;
 

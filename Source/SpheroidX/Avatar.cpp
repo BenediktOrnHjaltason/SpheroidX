@@ -349,6 +349,7 @@ void AAvatar::UsePortal()
 		EffectPlane->SetVisibility(false);
 		PortalMorph();
 		GetWorldTimerManager().SetTimer(PortalDisappearTimer, this, &AAvatar::TravelPortalTimerProxy, 0.25f, false);
+		bShouldChangeButtonImage = true;
 	}
 
 	else
@@ -363,6 +364,7 @@ void AAvatar::UsePortal()
 		LevelPortal->SetActorLocation(GetActorLocation() + SpawnOffsett);
 
 		LevelPortal->Morph(EOpenOrClose::Open);
+		bShouldChangeButtonImage = true;
 	}
 }
 

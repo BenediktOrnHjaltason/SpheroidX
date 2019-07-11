@@ -103,7 +103,7 @@ public:
 
 		FVector CameraUpperPosition{ 0.f, 0.f, 130.f };
 		FVector CameraLowerPosition{ 0.f, 0.f, -100.f };
-		FVector LocationAtDirectionChange{ 0.f, 0.f, 0.f };
+		//FVector LocationAtDirectionChange{ 0.f, 0.f, 0.f };
 
 		bool bIsMovingUp = false;
 		bool bIsMovingDown = false;
@@ -253,6 +253,7 @@ public:
 
 		FVector SpawnOffsett{ 5.f, 0.f, 0.f };
 
+		UFUNCTION(BlueprintCallable)
 		void UsePortal();
 
 		void TravelPortalTimerProxy();
@@ -272,6 +273,8 @@ public:
 		UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bIsTravelingThroughPortal = false;
 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+			bool bShouldChangeButtonImage = false;
 
 		//------------/Portal-----------//
 
@@ -282,6 +285,9 @@ public:
 
 		bool bCameraSwitchBool = false;
 		//-------/Move Camera-----------//
+
+		
+
 
 protected:
 	// Called when the game starts or when spawned
