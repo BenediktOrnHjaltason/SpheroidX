@@ -114,6 +114,8 @@ void USpheroidGameInstance::SaveLevelTimesToDisk()
 			*SaveObject->LevelsLocked[i] = LevelsLocked[i];
 		}
 
+		SaveObject->bPortalHasBeenUnlocked = bPortalHasBeenUnlocked;
+
 		UGameplayStatics::SaveGameToSlot(SaveObject, SlotName, UserIndex);
 }
 
@@ -128,6 +130,12 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 
 		if (LoadObject)
 		{
+			bPortalHasBeenUnlocked = LoadObject->bPortalHasBeenUnlocked;
+
+			if (bPortalHasBeenUnlocked) UE_LOG(LogTemp, Warning, TEXT("Portal has been unlocked before"))
+
+			else UE_LOG(LogTemp, Warning, TEXT("Portal has NOT been unlocked before"))
+
 			for (int i = 0; i < NumberOfLevels; ++i)
 			{
 				if (LevelTimes.IsValidIndex(i) && LoadObject->LevelTimes.IsValidIndex(i) &&
@@ -141,8 +149,5 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 			}
 		}
 	}
-
-	for (int i = 0; i < LevelTimes.Num(); ++i)
-		UE_LOG(LogTemp, Warning, TEXT("LevelTime level %i is %f"), i+1, LevelTimes[i])
 
 }

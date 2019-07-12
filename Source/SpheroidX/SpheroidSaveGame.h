@@ -34,6 +34,9 @@ public:
 		TArray<bool*> LevelsLocked;
 
 		UPROPERTY(VisibleAnywhere)
+			bool bPortalHasBeenUnlocked = false;
+
+		UPROPERTY(VisibleAnywhere)
 			float time_L1 = 0.f;
 		UPROPERTY(VisibleAnywhere)
 			float time_L2 = 0.f;

@@ -30,7 +30,7 @@ public:
 		int LevelIndex = 99;
 
 	bool bIsFreshSessionStart = true;
-
+	//This actually saves LevelTimes, LevelsLocked and bPortalHasBeenUnlocked
 	UFUNCTION(BlueprintCallable)
 		void SaveLevelTimesToDisk();
 
@@ -69,6 +69,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FString sPreviousBestTime{"00 : 00 : 00"};
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		bool bPortalHasBeenUnlocked = false;
 
 	void ManageNewHighScore(float NewTime);
 

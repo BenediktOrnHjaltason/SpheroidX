@@ -60,9 +60,6 @@ void AAvatar::BeginPlay()
 	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
 		NULL, LOAD_None, NULL);
 
-	if (MaterialParameters) UE_LOG(LogTemp, Warning, TEXT("BeginPlay: We have reference to MaterialParameterCollection"));
-	
-
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &AAvatar::Overlaps);
 
 	for (TActorIterator<ALevelTransitionDevice> DeviceItr(GetWorld()); DeviceItr; ++DeviceItr)
