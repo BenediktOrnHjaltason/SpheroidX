@@ -15,7 +15,7 @@ USpheroidGameInstance::USpheroidGameInstance()
 {
 	LevelTimes.Init(0.f, NumberOfLevels);
 
-	LevelTimesString.Init("00 : 00 : 00", NumberOfLevels);
+	LevelTimesString.Init("00:00:00", NumberOfLevels);
 
 	LevelsLocked.Init(true, NumberOfLevels);
 }
@@ -52,7 +52,7 @@ void USpheroidGameInstance::BreakTimeLevelEnd(const float& f_Seconds, const int&
 		}
 	}
 
-	sCurrentLevelTime = S_Minutes + " : " + S_Seconds + " : " + S_Milliseconds;
+	sCurrentLevelTime = S_Minutes + ":" + S_Seconds + ":" + S_Milliseconds;
 
 	UE_LOG(LogTemp,Warning, TEXT("TimeString = %s"), *LevelTimesString[p_LevelIndex])
 
@@ -91,7 +91,7 @@ void USpheroidGameInstance::BreakTimeLoad(const float& f_Seconds, const int&Leve
 		}
 	}
 
-	LevelTimesString[LevelIndex] = S_Minutes + " : " + S_Seconds + " : " + S_Milliseconds;
+	LevelTimesString[LevelIndex] = S_Minutes + ":" + S_Seconds + ":" + S_Milliseconds;
 }
 
 void USpheroidGameInstance::ManageNewHighScore(float NewTime)
