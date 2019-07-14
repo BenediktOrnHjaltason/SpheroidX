@@ -248,6 +248,12 @@ void AAvatar::DeathSequence()
 		LevelExit->SpheroidKeyCount = 0;
 	}
 
+	if (LevelPortal->bIsPortalActive)
+	{
+		ResetPortalOnDeath();
+	}
+
+
 	bIsFirstTimeOnLevel = false;
 	bIsEffectAllowed = false;
 
@@ -340,13 +346,14 @@ void AAvatar::UsePortal()
 			bMakeOrTravel = !bMakeOrTravel;
 			return;
 		}
-		//Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
+		Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 		bIsTravelingThroughPortal = true;
 		Exhaust->SetVisibility(false);
 		EffectPlane->SetVisibility(false);
 		PortalMorph();
 		GetWorldTimerManager().SetTimer(PortalDisappearTimer, this, &AAvatar::TravelPortalTimerProxy, 0.25f, false);
 		bShouldChangeButtonImage = true;
+		GameModeRef->ChangePortalButtonIcon(false);
 	}
 
 	else
@@ -362,6 +369,7 @@ void AAvatar::UsePortal()
 
 		LevelPortal->Morph(EOpenOrClose::Open);
 		bShouldChangeButtonImage = true;
+		GameModeRef->ChangePortalButtonIcon(false);
 	}
 }
 
@@ -376,7 +384,7 @@ void AAvatar::PortalMorphCleanUp()
 	Exhaust->SetVisibility(true);
 	EffectPlane->SetVisibility(true);
 	bIsTravelingThroughPortal = false;
-	//Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
 }
 
 void AAvatar::PortalDissapear()
@@ -391,4 +399,13 @@ void AAvatar::MoveCamera()
 	if (bCameraSwitchBool) Camera->SetRelativeLocation(CameraLowerPosition);
 
 	else Camera->SetRelativeLocation(CameraUpperPosition);
+}
+
+void AAvatar::ResetPortalOnDeath()
+{
+	LevelPortal->bIsPortalActive = false;
+	bIsTravelingThroughPortal = false;
+	bMakeOrTravel = true;
+	LevelPortal->SetActorHiddenInGame(true);
+	GameModeRef->ChangePortalButtonIcon(true);
 }

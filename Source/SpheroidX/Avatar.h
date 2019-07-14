@@ -14,6 +14,7 @@
 #include "TimerManager.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Components/AudioComponent.h"
+#include "MyEnums.h"
 #include "Avatar.generated.h"
 
 UCLASS()
@@ -275,6 +276,8 @@ public:
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite)
 			bool bShouldChangeButtonImage = false;
+
+		void ResetPortalOnDeath();
 
 		//------------/Portal-----------//
 

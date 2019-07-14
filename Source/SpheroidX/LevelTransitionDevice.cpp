@@ -173,6 +173,7 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 		Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		Spheroid->SetActorTickEnabled(false);
 		Spheroid->ExhaustMID->SetScalarParameterValue("Opacity", 0.f);
+		Spheroid->Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 
 		Spheroid->SetActorLocation(PawnAttachLocation->GetComponentLocation());
 		Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(

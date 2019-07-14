@@ -59,6 +59,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	int LevelIndex = 0;
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void ChangePortalButtonIcon(bool bIsforDeathReset);
+
 };
 
 

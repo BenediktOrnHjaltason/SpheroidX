@@ -129,6 +129,9 @@ public:
 		void CreateTutorialEndWidget();
 
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void ChangePortalButtonIconOnDeath();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
