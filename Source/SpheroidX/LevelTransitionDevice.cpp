@@ -91,7 +91,7 @@ void ALevelTransitionDevice::PrepareSpheroidForLaunch()
 {
 	Spheroid->SetActorTickEnabled(false);
 	Spheroid->Exhaust->SetVisibility(false);
-	Spheroid->PlaneMesh->SetRelativeScale3D(FVector((0.837413f, 0.837413f, 1.000000f)));
+	Spheroid->PlaneMesh->SetRelativeScale3D(FVector(0.837413f, 0.837413f, 1.000000f));
 
 	Spheroid->PlaneMesh->SetVisibility(true);
 	Spheroid->EffectPlane->SetVisibility(true);
