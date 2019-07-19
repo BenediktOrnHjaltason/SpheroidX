@@ -178,7 +178,7 @@ public:
 		FVector DeathBig{ 2.f, 2.f, 1.f };
 
 		UFUNCTION(BlueprintImplementableEvent)
-			void TL_DeathEffect();
+			void TL_DeathEffect(bool bDeathByBlackHole = false, FVector DeathLocation = FVector(0.f,0.f,0.f), FVector BlackHoleLocation = FVector(0.f,0.f,0.f ));
 
 		UFUNCTION(BlueprintCallable)
 			void DeathEffect(float TimelineScale);
@@ -224,7 +224,7 @@ public:
 
 		//------------DEATH-----------//
 		UFUNCTION(BlueprintCallable)
-		void DeathSequence();
+		void DeathSequence(bool bDeathByBlackHole = false);
 
 		UFUNCTION(BlueprintImplementableEvent)
 			void TL_MoveToEntrance();
@@ -235,8 +235,12 @@ public:
 		UFUNCTION(BlueprintCallable)
 			void AfterMove();
 
+		UFUNCTION(BlueprintCallable)
+			void AfterBlackHoleShrink();
 
 		FVector DeathLocation;
+
+		FVector BlackHoleLocation;
 
 		FTimerHandle MoveToEntranceHandle;
 

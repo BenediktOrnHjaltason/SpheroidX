@@ -104,48 +104,6 @@ void AAvatar::Tick(float DeltaTime)
 
 	AudioComp->SetVolumeMultiplier(InputMultiplier);
 
-
-	/*
-
-	//Camera Movement
-	ZVelocity = Collision->GetPhysicsLinearVelocity().Z;
-
-	UE_LOG(LogTemp, Warning, TEXT("Z Velocity: %f"), ZVelocity)
-	
-	if (ZVelocity > 50.f)
-	{
-		bIsMovingUp = true;
-		bIsMovingDown = false;
-		bShouldCameraStartMoving = true;
-	}
-	else if (ZVelocity < -50.f)
-	{
-		bIsMovingDown = true;
-		bIsMovingUp = false;
-		bShouldCameraStartMoving = true;
-	}
-	else if (ZVelocity < 50.f && ZVelocity > -50.f)
-	{
-		bShouldCameraStartMoving = false;
-		bChangedDirection = true;
-		bIsMovingDown = false;
-		bIsMovingUp = false;
-	}
-
-	if (bIsMovingUp && bShouldCameraStartMoving)
-	{
-		bShouldCameraStartMoving = false;
-		LocationAtDirectionChange = Camera->GetRelativeTransform().GetLocation();
-		LerpCamera(LocationAtDirectionChange, CameraUpperPosition);
-	}
-
-	else if (bIsMovingDown && bShouldCameraStartMoving)
-	{
-		bShouldCameraStartMoving = false;
-		LocationAtDirectionChange = Camera->GetRelativeTransform().GetLocation();
-		LerpCamera(LocationAtDirectionChange, CameraLowerPosition);
-	}
-	*/
 }
 
 // Called to bind functionality to input
@@ -199,16 +157,28 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 				GameInstance->LevelsLocked[GameInstance->LevelIndex + 1] = false;
 		}
 
-	else if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic)
+	else if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic || OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_GameTraceChannel2)
 	{
+			
 		UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", DeathColor);
 
 		if (LevelExit->EntranceOrExit != ELTD_Type::TutorialExit && Keys >= LevelExit->KeysNeededToOpen) LevelExit->DeactivateExit();
 
-		DeathSequence();
+
+		if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_GameTraceChannel2)
+		{
+			BlackHoleLocation = OtherActor->GetActorLocation();		
+			DeathSequence(true);
+		}
+
+		else DeathSequence();
+
 		bIsDeathSequenceRunning = true;
 	}
 }
+
+// DeathLocation is set to blackhole location to have correct movement back to LTD,
+// but this causes movementlerping to have no effect
 
 void AAvatar::CalculateTime(int LevelIndex)
 {
@@ -222,23 +192,38 @@ void AAvatar::CalculateTime(int LevelIndex)
 	}
 }
 
-void AAvatar::DeathSequence()
+void AAvatar::DeathSequence(bool bDeathByBlackHole)
 {	
 	SetActorTickEnabled(false);
 	AudioComp->SetVolumeMultiplier(0.f);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
-	TL_DeathEffect();
+
+	DeathLocation = GetActorLocation();
+
+	if (bDeathByBlackHole)
+	{
+		EffectPlane->SetVisibility(false);
+		TL_DeathEffect(true, DeathLocation, BlackHoleLocation);
+	}
+
+	else
+	{
+		PlaneMesh->SetVisibility(false);
+		TL_DeathEffect();
+	}
+
 	Collision->SetLinearDamping(1000);
 	Collision->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
-	PlaneMesh->SetVisibility(false);
+	
 	Exhaust->SetVisibility(false);
-	DeathLocation = GetActorLocation();
+	
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Ignore);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel1, ECollisionResponse::ECR_Ignore);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Destructible, ECollisionResponse::ECR_Ignore);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel2, ECollisionResponse::ECR_Ignore);
 
 	GameModeRef->NotifiedOfDeath();
 
@@ -273,7 +258,13 @@ void AAvatar::AfterMove()
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Overlap);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel1, ECollisionResponse::ECR_Overlap);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Destructible, ECollisionResponse::ECR_Overlap);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel2, ECollisionResponse::ECR_Overlap);
 	LevelEntrance->TL_OperateDoors(EOpenOrClose::Close, true);
+}
+
+void AAvatar::AfterBlackHoleShrink()
+{
+	DeathLocation = FVector(GetActorLocation().X, BlackHoleLocation.Y, BlackHoleLocation.Z);
 }
 
 
