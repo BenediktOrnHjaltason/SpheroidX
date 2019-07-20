@@ -171,6 +171,9 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 
 		UGameplayStatics::PlaySound2D(GetWorld(), Sound_ReachedGoal);
 
+		Spheroid->AttachToComponent(PawnAttachLocation, FAttachmentTransformRules(
+			EAttachmentRule::SnapToTarget, true));
+
 		Spheroid->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		Spheroid->SetActorTickEnabled(false);
 		Spheroid->ExhaustMID->SetScalarParameterValue("Opacity", 0.f);
