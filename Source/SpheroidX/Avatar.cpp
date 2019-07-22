@@ -194,6 +194,8 @@ void AAvatar::CalculateTime(int LevelIndex)
 
 void AAvatar::DeathSequence(bool bDeathByBlackHole)
 {	
+	if (bIsTravelingThroughPortal) return;
+
 	SetActorTickEnabled(false);
 	AudioComp->SetVolumeMultiplier(0.f);
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
@@ -338,6 +340,7 @@ void AAvatar::UsePortal()
 			return;
 		}
 		Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Ignore);
+		Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel2, ECollisionResponse::ECR_Ignore);
 		bIsTravelingThroughPortal = true;
 		Exhaust->SetVisibility(false);
 		EffectPlane->SetVisibility(false);
@@ -376,6 +379,7 @@ void AAvatar::PortalMorphCleanUp()
 	EffectPlane->SetVisibility(true);
 	bIsTravelingThroughPortal = false;
 	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
+	Collision->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel2, ECollisionResponse::ECR_Overlap);
 }
 
 void AAvatar::PortalDissapear()
