@@ -10,5 +10,5 @@ public class SpheroidXEditorTarget : TargetRules
 		Type = TargetType.Editor;
 
 		ExtraModuleNames.AddRange( new string[] { "SpheroidX" } );
-	}
+    }
 }

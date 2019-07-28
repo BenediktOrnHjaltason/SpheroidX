@@ -20,6 +20,7 @@ USpheroidGameInstance::USpheroidGameInstance()
 	LevelsLocked.Init(true, NumberOfLevels);
 }
 
+
 void USpheroidGameInstance::BreakTimeLevelEnd(const float& f_Seconds, const int& p_LevelIndex)
 {
 	//Minutes
@@ -150,4 +151,24 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 		}
 	}
 
+}
+
+void USpheroidGameInstance::ManageAds()
+{
+	if (LevelIndex > 2)
+	{
+		++AdsDecider;
+
+		if (AdsDecider == 2)
+		{
+			M_LoadInterStitialAd();
+		}
+
+		else if (AdsDecider == 3)
+		{
+			AdsDecider = 0;
+			M_ShowInterStitialAd();
+		}
+
+	}
 }

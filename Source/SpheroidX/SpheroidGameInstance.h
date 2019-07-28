@@ -49,6 +49,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		TArray<FString> LevelTimesString;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float CurrentTimeSeconds = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		int CurrentTimesMilliSeconds = 0;
+
 	//--Temp variable--//
 
 	int i_Minutes = 0;
@@ -83,4 +89,17 @@ public:
 	float GetLevelTime() { return LevelTimes[LevelIndex]; }
 	void SetLevelTime(float NewTime) { LevelTimes[LevelIndex] = NewTime; }
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void HandleLeaderboard(int CurrentMilliseconds);
+
+	UFUNCTION(BlueprintCallable)
+		void ManageAds();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void M_LoadInterStitialAd();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void M_ShowInterStitialAd();
+
+	int AdsDecider = 0;
 };

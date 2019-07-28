@@ -182,13 +182,17 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 
 void AAvatar::CalculateTime(int LevelIndex)
 {
-	float LevelTime = CurrentWorld->GetRealTimeSeconds() - TimeAtShootOut;
+	GameInstance->CurrentTimeSeconds = CurrentWorld->GetRealTimeSeconds() - TimeAtShootOut;
 
-	GameInstance->BreakTimeLevelEnd(LevelTime, GameInstance->LevelIndex);
+	GameInstance->CurrentTimesMilliSeconds = GameInstance->CurrentTimeSeconds * 1000;
 
-	if (GameInstance->GetLevelTime() == 0 || LevelTime < GameInstance->GetLevelTime())
+	GameInstance->HandleLeaderboard(GameInstance->CurrentTimesMilliSeconds);
+
+	GameInstance->BreakTimeLevelEnd(GameInstance->CurrentTimeSeconds, GameInstance->LevelIndex);
+
+	if (GameInstance->GetLevelTime() == 0 || GameInstance->CurrentTimeSeconds < GameInstance->GetLevelTime())
 	{
-		GameInstance->ManageNewHighScore(LevelTime);
+		GameInstance->ManageNewHighScore(GameInstance->CurrentTimeSeconds);
 	}
 }
 
