@@ -202,7 +202,7 @@ public:
 		UFUNCTION(BlueprintCallable)
 		void BoostProxy();
 
-		bool bIsEffectAllowed = false;
+		bool bIsEffectAllowed = true;
 
 		bool bIsDeathSequenceRunning = false;
 

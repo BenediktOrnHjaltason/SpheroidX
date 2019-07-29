@@ -288,18 +288,14 @@ void AAvatar::EffectCleanUp()
 
 void AAvatar::BoostProxy()
 {
-	
+	if (bIsDeathSequenceRunning) return;
+
 	Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
 	Collision->AddImpulse(GetActorUpVector() * 10000);
-
-	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
-	bIsEffectAllowed = false;
-
-	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
-	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
 	UGameplayStatics::PlaySound2D(CurrentWorld, BoostSound, 1.f, 1.f, 0.15f);
 	TL_BoostEffect();
+	
 }
 
 void AAvatar::BoostEffect(float TimelineScale, float TimelineOpacity)
@@ -314,8 +310,7 @@ void AAvatar::StopMomentum()
 {
 	Collision->SetPhysicsLinearVelocity(FVector(0, 0, 0));
 
-	if (!bIsEffectAllowed || bIsDeathSequenceRunning) return;
-	bIsEffectAllowed = false;
+	if (bIsDeathSequenceRunning) return;
 
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
