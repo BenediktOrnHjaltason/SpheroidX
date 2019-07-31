@@ -102,4 +102,13 @@ public:
 		void M_ShowInterStitialAd();
 
 	int AdsDecider = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool bShouldAskToLogIn = true;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool bSignedInAfterPrompt = false;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool bDeclinedSignInAfterPrompt = false;
 };

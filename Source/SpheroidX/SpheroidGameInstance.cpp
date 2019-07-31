@@ -48,6 +48,14 @@ void USpheroidGameInstance::BreakTimeLevelEnd(const float& f_Seconds, const int&
 	{
 		if (UKismetStringLibrary::GetSubstring(S_Milliseconds, i, 1) == ".")
 		{
+			FString ThirdDecimal = UKismetStringLibrary::GetSubstring(S_Milliseconds, i + 3, 1);
+
+			if (ThirdDecimal == "5" || ThirdDecimal == "6" || ThirdDecimal == "7" ||
+				ThirdDecimal == "8" || ThirdDecimal == "9")
+			{
+				S_Milliseconds = FString::SanitizeFloat(f_Seconds + 0.01, 2);
+			}
+
 			S_Milliseconds = UKismetStringLibrary::GetSubstring(S_Milliseconds, i+1, 2);
 			break;
 		}
@@ -87,10 +95,20 @@ void USpheroidGameInstance::BreakTimeLoad(const float& f_Seconds, const int&Leve
 	{
 		if (UKismetStringLibrary::GetSubstring(S_Milliseconds, i, 1) == ".")
 		{
+			FString ThirdDecimal = UKismetStringLibrary::GetSubstring(S_Milliseconds, i + 3, 1);
+
+			if (ThirdDecimal == "5" || ThirdDecimal == "6" || ThirdDecimal == "7" ||
+				ThirdDecimal == "8" || ThirdDecimal == "9")
+			{
+				S_Milliseconds = FString::SanitizeFloat(f_Seconds + 0.01, 2);
+			}
+
 			S_Milliseconds = UKismetStringLibrary::GetSubstring(S_Milliseconds, i + 1, 2);
 			break;
 		}
 	}
+
+	
 
 	LevelTimesString[LevelIndex] = S_Minutes + ":" + S_Seconds + ":" + S_Milliseconds;
 }
@@ -116,6 +134,7 @@ void USpheroidGameInstance::SaveLevelTimesToDisk()
 		}
 
 		SaveObject->bPortalHasBeenUnlocked = bPortalHasBeenUnlocked;
+		SaveObject->ShouldAskToLogIn = bShouldAskToLogIn;
 
 		UGameplayStatics::SaveGameToSlot(SaveObject, SlotName, UserIndex);
 }
@@ -132,6 +151,7 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 		if (LoadObject)
 		{
 			bPortalHasBeenUnlocked = LoadObject->bPortalHasBeenUnlocked;
+			bShouldAskToLogIn = LoadObject->ShouldAskToLogIn;
 
 			if (bPortalHasBeenUnlocked) UE_LOG(LogTemp, Warning, TEXT("Portal has been unlocked before"))
 
@@ -159,12 +179,12 @@ void USpheroidGameInstance::ManageAds()
 	{
 		++AdsDecider;
 
-		if (AdsDecider == 2)
+		if (AdsDecider == 1)
 		{
 			M_LoadInterStitialAd();
 		}
 
-		else if (AdsDecider == 3)
+		else if (AdsDecider == 2)
 		{
 			AdsDecider = 0;
 			M_ShowInterStitialAd();

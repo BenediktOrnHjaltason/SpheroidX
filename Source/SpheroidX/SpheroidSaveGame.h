@@ -230,5 +230,9 @@ public:
 			bool Locked_L47 = true;
 		UPROPERTY(VisibleAnywhere)
 			bool Locked_L48 = true;
+
+
+		UPROPERTY(VisibleAnywhere)
+		bool ShouldAskToLogIn = true;
 		//-----------/SavedData--------------//
 };
