@@ -195,6 +195,8 @@ void ALevelTransitionDevice::CatchSpheroid(UPrimitiveComponent * OverlappedComp,
 		{
 			CreateTutorialEndWidget();
 		}
+
+
 	}
 }
 

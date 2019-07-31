@@ -135,6 +135,7 @@ void USpheroidGameInstance::SaveLevelTimesToDisk()
 
 		SaveObject->bPortalHasBeenUnlocked = bPortalHasBeenUnlocked;
 		SaveObject->ShouldAskToLogIn = bShouldAskToLogIn;
+		SaveObject->bHasPlayerWonTheGame = bHasPlayerWonTheGame;
 
 		UGameplayStatics::SaveGameToSlot(SaveObject, SlotName, UserIndex);
 }
@@ -152,6 +153,7 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 		{
 			bPortalHasBeenUnlocked = LoadObject->bPortalHasBeenUnlocked;
 			bShouldAskToLogIn = LoadObject->ShouldAskToLogIn;
+			bHasPlayerWonTheGame = LoadObject->bHasPlayerWonTheGame;
 
 			if (bPortalHasBeenUnlocked) UE_LOG(LogTemp, Warning, TEXT("Portal has been unlocked before"))
 
@@ -175,6 +177,8 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 
 void USpheroidGameInstance::ManageAds()
 {
+	if (bHasPlayerWonTheGame) return;
+
 	if (LevelIndex > 2)
 	{
 		++AdsDecider;

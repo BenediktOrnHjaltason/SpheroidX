@@ -111,4 +111,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 		bool bDeclinedSignInAfterPrompt = false;
+
+	bool bHasPlayerWonTheGame = false;
 };

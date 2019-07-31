@@ -155,6 +155,12 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 			//unlock next level if there is next level
 			if (GameInstance->LevelsLocked.IsValidIndex(GameInstance->LevelIndex + 1))
 				GameInstance->LevelsLocked[GameInstance->LevelIndex + 1] = false;
+
+			if (GameInstance->LevelIndex == 47)
+			{
+				GameInstance->bHasPlayerWonTheGame = true;
+				CreateWinScreen();
+			}
 		}
 
 	else if (OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic || OtherComp->GetCollisionObjectType() == ECollisionChannel::ECC_GameTraceChannel2)

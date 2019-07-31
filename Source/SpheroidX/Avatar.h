@@ -293,7 +293,8 @@ public:
 		bool bCameraSwitchBool = false;
 		//-------/Move Camera-----------//
 
-		
+		UFUNCTION(BlueprintImplementableEvent)
+			void CreateWinScreen();
 
 
 protected:

@@ -234,5 +234,8 @@ public:
 
 		UPROPERTY(VisibleAnywhere)
 		bool ShouldAskToLogIn = true;
+
+		UPROPERTY(VisibleAnywhere)
+		bool bHasPlayerWonTheGame = false;
 		//-----------/SavedData--------------//
 };
