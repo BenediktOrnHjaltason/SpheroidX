@@ -179,7 +179,7 @@ void USpheroidGameInstance::ManageAds()
 {
 	if (bHasPlayerWonTheGame) return;
 
-	if (LevelIndex > 2)
+	if (LevelIndex > 3)
 	{
 		++AdsDecider;
 

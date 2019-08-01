@@ -158,7 +158,14 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 
 			if (GameInstance->LevelIndex == 47)
 			{
-				GameInstance->bHasPlayerWonTheGame = true;
+				if (!GameInstance->bHasPlayerWonTheGame)
+				{
+					GameInstance->bHasPlayerWonTheGame = true;
+					GameInstance->SaveLevelTimesToDisk();
+
+					UE_LOG(LogTemp,Warning, TEXT("Avatar::Overlaps() SavedWonGameStateToDisk"))
+				}
+
 				CreateWinScreen();
 			}
 		}
@@ -195,6 +202,7 @@ void AAvatar::CalculateTime(int LevelIndex)
 	GameInstance->HandleLeaderboard(GameInstance->CurrentTimesMilliSeconds);
 
 	GameInstance->BreakTimeLevelEnd(GameInstance->CurrentTimeSeconds, GameInstance->LevelIndex);
+
 
 	if (GameInstance->GetLevelTime() == 0 || GameInstance->CurrentTimeSeconds < GameInstance->GetLevelTime())
 	{
