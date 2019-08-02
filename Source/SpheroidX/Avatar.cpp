@@ -152,10 +152,6 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 			//Reset for next round
 			GameInstance->OldTimeForComparison = 0.f;
 
-			//unlock next level if there is next level
-			if (GameInstance->LevelsLocked.IsValidIndex(GameInstance->LevelIndex + 1))
-				GameInstance->LevelsLocked[GameInstance->LevelIndex + 1] = false;
-
 			if (GameInstance->LevelIndex == 47)
 			{
 				if (!GameInstance->bHasPlayerWonTheGame)
@@ -202,6 +198,10 @@ void AAvatar::CalculateTime(int LevelIndex)
 	GameInstance->HandleLeaderboard(GameInstance->CurrentTimesMilliSeconds);
 
 	GameInstance->BreakTimeLevelEnd(GameInstance->CurrentTimeSeconds, GameInstance->LevelIndex);
+
+	//unlock next level if there is next level
+	if (GameInstance->LevelsLocked.IsValidIndex(GameInstance->LevelIndex + 1))
+		GameInstance->LevelsLocked[GameInstance->LevelIndex + 1] = false;
 
 
 	if (GameInstance->GetLevelTime() == 0 || GameInstance->CurrentTimeSeconds < GameInstance->GetLevelTime())
