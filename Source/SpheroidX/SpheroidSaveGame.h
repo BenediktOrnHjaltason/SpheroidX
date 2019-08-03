@@ -233,7 +233,7 @@ public:
 
 
 		UPROPERTY(VisibleAnywhere)
-		bool ShouldAskToLogIn = true;
+		bool bShouldSignInUser = true;
 
 		UPROPERTY(VisibleAnywhere)
 		bool bHasPlayerWonTheGame = false;

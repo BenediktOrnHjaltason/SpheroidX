@@ -57,6 +57,8 @@ void AAvatar::BeginPlay()
 	SetActorTickEnabled(false);
 	Exhaust->SetVisibility(false);
 
+	DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
 	MaterialParameters = LoadObject<UMaterialParameterCollection>(NULL, TEXT("MaterialParameterCollection'/Game/Materials/MaterialParameterCollection_Spheroid.MaterialParameterCollection_Spheroid'"),
 		NULL, LOAD_None, NULL);
 

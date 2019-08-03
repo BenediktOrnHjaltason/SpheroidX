@@ -47,7 +47,7 @@ void AAccelerator::OverlapsWithSpheroid(UPrimitiveComponent * OverlappedComp, AA
 
 	Spheroid->Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 	Spheroid->Collision->AddImpulse(GetActorUpVector() * Accelleration);
-	UGameplayStatics::PlaySound2D(GetWorld(), AcceleratorEffect);
+	PlaySoundEffect();
 }
 
 

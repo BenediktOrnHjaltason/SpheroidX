@@ -104,13 +104,7 @@ public:
 	int AdsDecider = 0;
 
 	UPROPERTY(BlueprintReadWrite)
-		bool bShouldAskToLogIn = true;
-
-	UPROPERTY(BlueprintReadWrite)
-		bool bSignedInAfterPrompt = false;
-
-	UPROPERTY(BlueprintReadWrite)
-		bool bDeclinedSignInAfterPrompt = false;
+		bool bShouldSignInUser = true;
 
 	bool bHasPlayerWonTheGame = false;
 };
