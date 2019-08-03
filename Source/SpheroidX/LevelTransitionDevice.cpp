@@ -148,6 +148,8 @@ void ALevelTransitionDevice::ShootOutSpheroid()
 	Spheroid->Collision->AddImpulse(GetActorUpVector() * 14000);
 
 	ReactivateSpheroidInput();
+
+	Spheroid->bIsInLevelStart = false;
 }
 
 void ALevelTransitionDevice::ReactivateSpheroidInput()

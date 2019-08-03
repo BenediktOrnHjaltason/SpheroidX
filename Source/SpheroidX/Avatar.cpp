@@ -304,7 +304,7 @@ void AAvatar::EffectCleanUp()
 
 void AAvatar::BoostProxy()
 {
-	if (bIsDeathSequenceRunning) return;
+	if (bIsDeathSequenceRunning || bIsInLevelStart) return;
 
 	Collision->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 
@@ -324,9 +324,10 @@ void AAvatar::BoostEffect(float TimelineScale, float TimelineOpacity)
 
 void AAvatar::StopMomentum()
 {
-	Collision->SetPhysicsLinearVelocity(FVector(0, 0, 0));
 
-	if (bIsDeathSequenceRunning) return;
+	if (bIsDeathSequenceRunning || bIsInLevelStart) return;
+
+	Collision->SetPhysicsLinearVelocity(FVector(0, 0, 0));
 
 	UKismetMaterialLibrary::SetVectorParameterValue(CurrentWorld, MaterialParameters, "Effect_Color", BoostColor);
 	UKismetMaterialLibrary::SetScalarParameterValue(CurrentWorld, MaterialParameters, "Effect_Opacity", 1);
