@@ -235,7 +235,5 @@ public:
 		UPROPERTY(VisibleAnywhere)
 		bool bShouldSignInUser = true;
 
-		UPROPERTY(VisibleAnywhere)
-		bool bHasPlayerWonTheGame = false;
 		//-----------/SavedData--------------//
 };

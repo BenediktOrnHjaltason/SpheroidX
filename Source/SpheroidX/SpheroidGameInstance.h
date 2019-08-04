@@ -105,6 +105,4 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 		bool bShouldSignInUser = true;
-
-	bool bHasPlayerWonTheGame = false;
 };

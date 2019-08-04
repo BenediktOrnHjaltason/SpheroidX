@@ -156,14 +156,6 @@ void AAvatar::Overlaps(UPrimitiveComponent * OverlappedComp, AActor * OtherActor
 
 			if (GameInstance->LevelIndex == 47)
 			{
-				if (!GameInstance->bHasPlayerWonTheGame)
-				{
-					GameInstance->bHasPlayerWonTheGame = true;
-					GameInstance->SaveLevelTimesToDisk();
-
-					UE_LOG(LogTemp,Warning, TEXT("Avatar::Overlaps() SavedWonGameStateToDisk"))
-				}
-
 				CreateWinScreen();
 			}
 		}
