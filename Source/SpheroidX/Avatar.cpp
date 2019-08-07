@@ -335,7 +335,7 @@ void AAvatar::StopMomentumEffect(float TimelineScale)
 
 void AAvatar::UsePortal()
 {
-	if (bIsDeathSequenceRunning) return;
+	if (bIsDeathSequenceRunning || bIsInLevelStart) return;
 
 	//True for travel through, false for make
 	bMakeOrTravel = !bMakeOrTravel;
