@@ -104,5 +104,8 @@ public:
 	int AdsDecider = 0;
 
 	UPROPERTY(BlueprintReadWrite)
-		bool bShouldSignInUser = true;
+		bool bShouldSignInUser = false;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool bIsFirstTimeStartingGame = true;
 };

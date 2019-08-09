@@ -135,6 +135,7 @@ void USpheroidGameInstance::SaveLevelTimesToDisk()
 
 		SaveObject->bPortalHasBeenUnlocked = bPortalHasBeenUnlocked;
 		SaveObject->bShouldSignInUser = bShouldSignInUser;
+		SaveObject->bIsFirstTimeStartingGame = bIsFirstTimeStartingGame;
 
 		UGameplayStatics::SaveGameToSlot(SaveObject, SlotName, UserIndex);
 }
@@ -152,6 +153,7 @@ void USpheroidGameInstance::LoadLevelTimesFromDisk()
 		{
 			bPortalHasBeenUnlocked = LoadObject->bPortalHasBeenUnlocked;
 			bShouldSignInUser = LoadObject->bShouldSignInUser;
+			bIsFirstTimeStartingGame = LoadObject->bIsFirstTimeStartingGame;
 
 			if (bPortalHasBeenUnlocked) UE_LOG(LogTemp, Warning, TEXT("Portal has been unlocked before"))
 

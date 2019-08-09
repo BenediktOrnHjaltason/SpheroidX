@@ -233,7 +233,10 @@ public:
 
 
 		UPROPERTY(VisibleAnywhere)
-		bool bShouldSignInUser = true;
+			bool bShouldSignInUser = false;
+
+		UPROPERTY(VisibleAnywhere)
+			bool bIsFirstTimeStartingGame = true;
 
 		//-----------/SavedData--------------//
 };
